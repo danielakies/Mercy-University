@@ -1,25 +1,29 @@
 # Mercy University Main Hall Dashboard
 
-Open `mercy-main-hall-dashboard.html` in a web browser. The dashboard is self-contained and
-works directly from the local folder; no web server or installation is required.
+Open [`index.html`](index.html) in a web browser (or `mercy-main-hall-dashboard.html` — same
+dashboard). The page is self-contained and works from the local folder; no web server is required.
+
+Password: **Mercy**
+
+Live site (GitHub Pages): https://danielakies.github.io/Mercy-University/
 
 ## Dashboard tabs
 
-1. **Plan vs. Inventory** — 2021 program-zone plans by floor alongside the April 2025
-   instructional room inventory and utilization metrics.
-2. **Building Stack** — an exploded axonometric of the four floor plates with one program
-   highlighted through the building.
-3. **Full Building Analysis** — program mix, room types and uses, departmental/school use,
-   utilization, and MEP/infrastructure information.
-4. **Site & Campus** — boundary survey, utilities, aerial context, campus buildings, and
+1. **Site & Campus** — boundary survey, utilities, aerial context, campus buildings, and
    geothermal/site coordination notes.
+2. **Full Building Analysis** — program mix, room types and uses, departmental/school use,
+   utilization, and MEP/infrastructure information.
+3. **Building Stack** — an exploded axonometric of the four floor plates with one program
+   highlighted through the building.
+4. **Plan View** — 2021 program-zone plans by floor alongside the April 2025 instructional
+   room inventory and utilization metrics.
 
-Each tab has its own URL fragment (`#plan`, `#stack`, `#analysis`, `#site`), so a particular
+Each tab has its own URL fragment (`#site`, `#analysis`, `#stack`, `#plan`), so a particular
 view can be bookmarked or pasted into an email.
 
 ## Interacting with the plan
 
-On the **Plan vs. Inventory** tab the floor plan is a live canvas. Hover a colored area for its
+On the **Plan View** tab the floor plan is a live canvas. Hover a colored area for its
 zone name and area, click it to isolate it (the rest of the plan fades) and open a detail panel,
 and click a legend row for the same result. Scroll to zoom, drag to pan, and use Fit to reset.
 Press `Esc` or use Clear selection to deselect.
