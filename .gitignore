@@ -1,0 +1,11 @@
+# Local probe / temp files
+_*.html
+_*.py
+_*.png
+*.pyc
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

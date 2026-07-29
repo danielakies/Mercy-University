@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mercy University — Main Hall Dashboard</title>
+<style>
+:root{--navy:#14355c;--blue:#2563a8;--cyan:#2d91a7;--gold:#d2a33a;--bg:#f3f6f9;--panel:#fff;--line:#dce3ea;--text:#17212b;--muted:#667484;--good:#16805b;--warn:#b66a13;--bad:#b23b3b;--shadow:0 10px 28px rgba(24,48,74,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit}.shell{max-width:1500px;margin:auto;padding:0 26px 60px}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.hero{margin:0 -26px 22px;padding:22px 26px 0;background:linear-gradient(118deg,#102d50,#1c5482 62%,#26889a);color:#fff;box-shadow:var(--shadow)}
+.brand{display:flex;gap:16px;align-items:center}.mark{width:48px;height:48px;border:2px solid #fff;border-radius:50%;display:grid;place-items:center;font:700 22px Georgia}
+.hero h1{font-size:24px;margin:0}.hero p{margin:2px 0 0;opacity:.78}.tabs{display:flex;gap:4px;margin-top:20px;overflow:auto}
+.tab{border:0;color:#dbe8f5;background:transparent;padding:13px 18px;border-bottom:3px solid transparent;cursor:pointer;font-weight:650;white-space:nowrap}
+.tab:hover{background:#ffffff10}.tab.on{color:#fff;border-bottom-color:#f4c557;background:#ffffff12}
+.view{display:none}.view.on{display:block}.toolbar,.card,.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.toolbar{display:flex;align-items:end;gap:14px;padding:14px 16px;margin-bottom:16px;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field label,.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.065em;color:var(--muted);font-weight:750}
+select,input{border:1px solid #cbd4dd;border-radius:7px;padding:8px 10px;background:#fff;color:var(--text)}input{min-width:220px}
+.source{margin-left:auto;color:var(--muted);font-size:12px;max-width:390px}.source b{color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:12px;margin:0 0 16px}.stat{padding:15px 16px}.stat .n{font-size:25px;font-weight:750;color:var(--navy)}.stat .l{font-size:12px;color:var(--muted);margin-top:2px}
+.grid-plan{display:grid;grid-template-columns:minmax(650px,1fr) 310px;gap:16px}.card{overflow:hidden}.card-hd{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.card-hd h2,.card-hd h3{margin:0;font-size:15px}.card-hd .right{margin-left:auto;color:var(--muted);font-size:12px}
+.plan-stage{height:620px;background:#eef2f5;position:relative;overflow:hidden;touch-action:none}.plan-stage canvas{width:100%;height:100%;display:block;cursor:crosshair}.plan-stage.grabbing canvas{cursor:grabbing}
+.plan-tools{position:absolute;top:10px;left:10px;display:flex;gap:6px;z-index:3}.plan-tools button{border:1px solid #cbd4dd;background:#fffffff2;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:12px;box-shadow:0 1px 4px #17212b1a}.plan-tools button:hover{background:#fff;border-color:var(--blue);color:var(--blue)}
+.tip{display:none;position:fixed;z-index:20;pointer-events:none;background:#102d50;color:#fff;border-radius:7px;padding:7px 9px;box-shadow:0 4px 14px #0003;font-size:12px}.tip b{display:block}
+.legend{padding:10px 14px;max-height:520px;overflow:auto}.leg-grp{margin:10px 0 4px;padding:5px 4px 3px;border-bottom:1px solid #d5dee7;display:flex;align-items:baseline;gap:8px}.leg-grp:first-child{margin-top:0}.leg-grp .code{font-size:12px;font-weight:750;letter-spacing:.04em;color:var(--navy);text-transform:uppercase}.leg-grp .ttl{font-size:13px;font-weight:700;color:#33475b;flex:1}.leg-grp .sum{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.leg-grp.na{border-bottom-color:#c9b8a0}.leg-grp.na .code{color:#8a6a2a}
+.leg{display:grid;grid-template-columns:14px 1fr auto;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px solid #edf1f4;cursor:pointer;border-radius:6px}.leg:hover{background:#f2f7fd}.leg.on{background:#e6f0fb;box-shadow:inset 0 0 0 1px #a9c8ea}.sw{width:13px;height:13px;border-radius:3px;border:1px solid #0002}.leg b{font-size:12.5px}.leg .serie{display:block;font-size:11.5px;font-weight:600;color:#5d6d7e}.leg span:last-child{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ficm-note{font-size:11px;color:var(--muted);padding:0 14px 10px}
+.chart-grp{margin:18px 0 7px;font-size:14px;font-weight:750;letter-spacing:.02em;color:var(--navy)}.chart-grp.na{color:#8a6a2a;margin-top:24px;padding-top:13px;border-top:1px dashed #d8c9ad}
+.ficm-tbl .series-row td{background:#f3f6f9;font-weight:700;font-size:15px}.ficm-tbl .series-row td .cite{font-size:12px;font-weight:400;white-space:normal;max-width:640px;margin-top:2px}.ficm-tbl .series-row.na td{background:#f8f3ea}.ficm-tbl .zone-row td:first-child{padding-left:30px}
+.zdetail{padding:14px;border-bottom:1px solid var(--line);background:#f7fbff}.zdetail.hidden{display:none}.zdetail .zt{display:flex;align-items:center;gap:8px;font-weight:750;font-size:14px}.zdetail .zt i{width:14px;height:14px;border-radius:3px;border:1px solid #0002;flex:none}
+.zdetail dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:10px 0 0;font-size:12px}.zdetail dt{color:var(--muted)}.zdetail dd{margin:0;font-variant-numeric:tabular-nums}
+.zdetail .rl{margin-top:11px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:750}.zdetail .rooms{margin-top:6px;display:flex;flex-wrap:wrap;gap:5px}.zdetail .rooms button{border:1px solid #cbd4dd;background:#fff;border-radius:6px;padding:3px 8px;font-size:12px;cursor:pointer}.zdetail .rooms button:hover{border-color:var(--blue);color:var(--blue)}
+.zdetail .clear{margin-top:12px;border:0;background:none;color:var(--blue);cursor:pointer;padding:0;font-size:12px}.zdetail .clear:hover{text-decoration:underline}
+.modal{position:fixed;inset:0;background:#0b1a2c66;display:grid;place-items:center;z-index:60;padding:20px}.modal.hidden{display:none}.modal-box{background:#fff;border-radius:14px;max-width:540px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px #0b1a2c55}
+.modal-hd{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}.modal-hd h2{margin:0;font-size:20px}.modal-x{margin-left:auto;border:0;background:none;font-size:25px;line-height:1;cursor:pointer;color:var(--muted)}.modal-x:hover{color:var(--text)}.modal-bd{padding:16px 18px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:13px;margin:0}.kv dt{color:var(--muted)}.kv dd{margin:0;font-variant-numeric:tabular-nums}
+.modal-bd h4{margin:16px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.modal-bd .btnrow{margin-top:16px;display:flex;gap:8px}.modal-bd .btnrow button{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:650}.modal-bd .btnrow button.ghost{background:#fff;color:var(--navy)}
+.notice{padding:12px 14px;border-left:4px solid var(--gold);background:#fff8e8;border-radius:6px;margin:16px 0;color:#654b18}.notice b{display:block;color:#44300d}
+.section-title{display:flex;align-items:end;justify-content:space-between;margin:26px 0 9px}.section-title h2{margin:0;font-size:18px}.section-title p{margin:0;color:var(--muted)}
+.table-wrap{overflow:auto;max-height:540px}table{width:100%;border-collapse:collapse}th,td{padding:9px 11px;border-bottom:1px solid #e8edf1;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#edf2f7;color:#526172;font-size:11px;text-transform:uppercase;letter-spacing:.04em;z-index:1}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}tbody tr[data-room]{cursor:pointer}tr:hover td{background:#f7faff}.pill{border-radius:999px;padding:2px 8px;font-size:11px;font-weight:650;background:#e9eff7;color:#31577e}.pill.lab{background:#e8f5ee;color:#176f50}.pill.open{background:#f2eafa;color:#70469a}
+.stack-ctl{display:flex;gap:14px;align-items:end;flex-wrap:wrap}.stack-ctl input[type=range]{width:118px;min-width:0;padding:0;border:0;background:none;accent-color:var(--blue)}
+.stack-stage{position:relative;background:#fff;overflow:hidden;min-height:520px}
+.stack-scene{position:absolute;inset:0}
+.stack-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);background:#fff}.stack-msg.hidden{display:none}
+.plate{position:absolute;left:50%;transform-style:preserve-3d;cursor:pointer}
+.plate-inner{position:relative;transform-style:preserve-3d}
+.plate-inner>canvas{display:block;background:#fff;filter:drop-shadow(0 14px 18px rgba(20,53,92,.2))}
+.plate.dim .plate-inner>canvas{opacity:.5}
+.plate.faded{opacity:.3}
+.plate:hover .plate-inner>canvas,.plate.sel .plate-inner>canvas{filter:drop-shadow(0 14px 18px rgba(20,53,92,.24)) drop-shadow(0 0 3px var(--blue))}
+.pin{position:absolute;transform-style:preserve-3d;pointer-events:none}
+.pin-i{position:absolute;left:-110px;bottom:0;width:220px;display:flex;flex-direction:column;align-items:center;transform-origin:50% 100%}
+.pin-box{border:1.5px solid var(--navy);background:#fff;border-radius:4px;padding:2px 7px;font:650 11px/1.25 "Segoe UI",Arial;color:var(--navy);white-space:nowrap;box-shadow:0 2px 6px #14355c22}
+.pin-stem{width:1.5px;height:18px;background:var(--navy)}.pin-dot{width:6px;height:6px;border-radius:50%;background:var(--navy);margin-top:-2px}
+.stack-rail{position:absolute;inset:0;pointer-events:none}
+.rail-line{position:absolute;border-left:1px dashed #b3c2d2}
+.flabel{position:absolute;transform:translateY(-50%);font-weight:750;color:var(--navy);white-space:nowrap;font-size:14px;pointer-events:auto}.flabel.off{color:#a9b6c4;font-weight:600}.flabel.sel{color:var(--blue)}.flabel small{display:block;font-weight:500;font-size:11px;color:var(--muted)}
+.flabel .flink{display:inline-block;margin-top:3px;font-size:11px;font-weight:600}
+.plate-card{padding:15px 16px}.plate-card .chips .chip{display:flex;gap:6px;align-items:center}.plate-card .chip i{width:11px;height:11px;border-radius:3px;border:1px solid #0002;flex:none}.plate-card .chip small{color:var(--muted)}
+.plate-card h4{margin:16px 0 7px;font-size:13.5px;font-weight:750;letter-spacing:.02em;color:var(--navy)}.plate-card h4.na{color:#8a6a2a}
+.plate-card .btnrow{margin-top:16px;display:flex;gap:8px}.plate-card .btnrow button{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:650}.plate-card .btnrow button.ghost{background:#fff;color:var(--navy)}
+.analysis-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.chart{padding:16px}.barrow{display:grid;grid-template-columns:minmax(150px,1fr) 2fr 78px;gap:10px;align-items:center;margin:9px 0}.barrow .nm{font-size:12px}.track{height:12px;background:#edf1f4;border-radius:6px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:6px}.barrow .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.mep-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px;padding:14px}.mep{border:1px solid var(--line);border-radius:9px;padding:13px}.mep .disc{color:var(--blue);font-size:11px;font-weight:750;text-transform:uppercase}.mep h3{font-size:14px;margin:4px 0}.mep p{color:#4f5f70;margin:0 0 8px}.cite{font-size:11px;color:var(--muted)}
+.dept-empty{padding:28px;text-align:center;color:var(--muted)}.dept-empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:4px}
+.site-grid{display:grid;grid-template-columns:minmax(700px,1fr) 340px;gap:16px}.site-stage{height:700px;background:#e8edf1;overflow:auto;display:grid;place-items:center;padding:14px}.site-stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;box-shadow:0 3px 16px #17212b22}
+.site-side{padding:15px}.site-side h3{margin:16px 0 6px;font-size:12px;text-transform:uppercase;color:var(--navy)}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{padding:5px 8px;background:#edf3f8;border-radius:6px;font-size:12px}.site-side ul{padding-left:18px;color:#4f5f70}.site-side li{margin:7px 0}
+.seg{display:flex;gap:4px;flex-wrap:wrap}.seg button{border:1px solid #cbd4dd;background:#fff;border-radius:7px;padding:7px 10px;cursor:pointer}.seg button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.foot{margin-top:22px;color:var(--muted);font-size:11px}.hidden{display:none!important}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.grid-plan,.site-grid,.analysis-grid{grid-template-columns:1fr}.plan-stage,.site-stage{height:520px}.mep-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.shell{padding:0 12px 40px}.hero{margin:0 -12px 18px;padding:17px 12px 0}.stats{grid-template-columns:1fr 1fr}.grid-plan{display:block}.grid-plan>.card{margin-bottom:12px}.plan-stage{height:420px}.barrow{grid-template-columns:1fr 1.2fr 65px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <div class="brand"><div class="mark">M</div><div><h1>Mercy University — Main Hall</h1><p>Space, utilization, building systems and campus context dashboard</p></div></div>
+    <nav class="tabs">
+      <button class="tab on" data-view="site">Site &amp; Campus</button>
+      <button class="tab" data-view="analysis">Full Building Analysis</button>
+      <button class="tab" data-view="stack">Building Stack</button>
+      <button class="tab" data-view="plan">Plan vs. Inventory</button>
+    </nav>
+  </header>
+
+  <main id="plan" class="view">
+    <div class="toolbar">
+      <div class="field"><label>Building</label><select><option>Main Hall (MH)</option></select></div>
+      <div class="field"><label>Zone plan floor</label><select id="floorSel"></select></div>
+      <div class="source"><b>Zone plan:</b> <a href="../2021 10 26 Final Main Hall Updated Floorplan Zones.pdf">2021 Noelker and Hull zones</a><br><b>Current reference:</b> <a href="../Main Hall_2023 update.pdf">2023 Main Hall update</a> · <b>Inventory:</b> April 2025 report</div>
+    </div>
+    <div class="stats" id="planStats"></div>
+    <div class="grid-plan">
+      <section class="card"><div class="card-hd"><h2 id="floorTitle">Zone plan</h2><span class="right" id="planHint">Click a colored area to inspect it · scroll to zoom, drag to pan</span></div>
+        <div class="plan-stage" id="planStage">
+          <canvas id="planCanvas"></canvas>
+          <div class="plan-tools"><button id="zoomIn" title="Zoom in">+</button><button id="zoomOut" title="Zoom out">−</button><button id="zoomFit">Fit</button></div>
+          <div class="tip" id="planTip"></div>
+        </div>
+      </section>
+      <aside class="card"><div class="card-hd"><h3>Program zones</h3><span class="right" id="zoneCount"></span></div><div class="zdetail hidden" id="zoneDetail"></div><div class="legend" id="legend"></div></aside>
+    </div>
+    <div class="notice"><b>Current comparison boundary</b>The 2021 plan is a program-zone plan, while the April 2025 report inventories instructional rooms only. The dashboard therefore compares floor/program totals and room utilization; a complete current room schedule is still needed for a one-to-one whole-building reconciliation.</div>
+    <div class="section-title"><div><h2>Instructional room inventory</h2><p>53 Main Hall classrooms and laboratories from the utilization report — click any row for the full record</p></div></div>
+    <div class="toolbar">
+      <div class="field"><label>Search</label><input id="roomSearch" placeholder="Room, type, school or department"></div>
+      <div class="field"><label>Floor</label><select id="roomFloor"><option value="">All floors</option><option value="G">Ground</option><option value="1">First</option><option value="2">Second</option><option value="3">Third</option></select></div>
+      <div class="field"><label>Room type</label><select id="roomType"><option value="">All types</option></select></div>
+      <div class="source" id="roomCount"></div>
+    </div>
+    <section class="card table-wrap"><table><thead><tr><th>Room</th><th>Floor</th><th>Type</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">ASF/Seat</th><th class="num">Seat occupancy</th><th class="num">Weekly hrs.</th><th class="num">Hour utilization</th><th>Department / school use</th></tr></thead><tbody id="rooms"></tbody></table></section>
+  </main>
+
+  <main id="stack" class="view">
+    <div class="toolbar">
+      <div class="field"><label>Highlight program</label><select id="stackZone"></select></div>
+      <div class="stack-ctl">
+        <div class="field"><label>Tilt</label><input type="range" id="ctlTilt" min="25" max="75" value="58"></div>
+        <div class="field"><label>Rotate</label><input type="range" id="ctlRot" min="-60" max="0" value="-36"></div>
+        <div class="field"><label>Spread</label><input type="range" id="ctlGap" min="25" max="150" value="75"></div>
+      </div>
+      <div class="source"><b>Plates:</b> <a href="../2021 10 26 Final Main Hall Updated Floorplan Zones.pdf">2021 Noelker and Hull zone plans</a><br>Callout areas are prorated from each legend total by painted area.</div>
+    </div>
+    <div class="stats" id="stackStats"></div>
+    <section class="card">
+      <div class="card-hd"><h2 id="stackTitle">Main Hall — exploded stack</h2><span class="right">Click a floor plate to inspect it here</span></div>
+      <div class="stack-stage" id="stackStage"><div class="stack-scene" id="stackScene"></div><div class="stack-rail" id="stackRail"></div><div class="stack-msg" id="stackMsg">Rendering floor plates…</div></div>
+    </section>
+    <section class="card hidden" id="plateCard" style="margin-top:16px"></section>
+    <div class="section-title"><div><h2 id="stackTblTitle">Program by floor</h2><p>Where the highlighted program sits, and which inventoried rooms match it</p></div></div>
+    <section class="card table-wrap"><table><thead><tr><th>Floor</th><th class="num">Program SF</th><th class="num">Share of floor</th><th class="num">Separate areas</th><th>Matching instructional rooms</th></tr></thead><tbody id="stackRows"></tbody></table></section>
+  </main>
+
+  <main id="analysis" class="view">
+    <div class="stats" id="analysisStats"></div>
+    <div class="analysis-grid">
+      <section class="card"><div class="card-hd"><h2>Program mix by FICM series</h2><span class="right">144,808 SF · nonassignable last</span></div><div class="chart" id="zoneChart"></div></section>
+      <section class="card"><div class="card-hd"><h2>Instructional inventory by room type</h2><span class="right">April 2025</span></div><div class="chart" id="typeChart"></div></section>
+    </div>
+    <div class="section-title"><div><h2>FICM classification of program zones</h2><p>Each 2021 zone-plan program mapped to a Postsecondary Education Facilities Inventory series</p></div></div>
+    <section class="card table-wrap"><table class="ficm-tbl"><thead><tr><th>Category / program</th><th>Series</th><th class="num">SF</th><th class="num">Share</th><th>Assignable</th></tr></thead><tbody id="ficmRows"></tbody></table></section>
+    <div class="section-title"><div><h2>Who is sitting where</h2><p>Schools and departments using Main Hall instructional rooms</p></div></div>
+    <section class="card" id="deptPanel"><div class="dept-empty"><strong>Department mapping is being assembled from the course-level appendix.</strong>The report identifies the school for each scheduled course—not a single permanent occupant—so the finished table will distinguish “scheduled users” from assigned ownership.</div></section>
+    <div class="section-title"><div><h2>MEP and infrastructure</h2><p>Current projects, record systems and feasibility information</p></div></div>
+    <section class="card"><div class="mep-grid" id="mepCards"></div></section>
+    <div class="section-title"><div><h2>Utilization detail</h2><p>Sort-ready room metrics from the April 2025 report</p></div></div>
+    <section class="card table-wrap"><table><thead><tr><th>Room</th><th>Type</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">Courses</th><th class="num">Seat occupancy</th><th class="num">Weekly hours</th><th class="num">% of hours</th><th>Comment</th></tr></thead><tbody id="utilRows"></tbody></table></section>
+  </main>
+
+  <main id="site" class="view on">
+    <div class="toolbar"><div class="seg" id="siteBtns"></div><div class="source"><b>Campus:</b> Westchester / Dobbs Ferry<br><b>Address:</b> 555 Broadway, Dobbs Ferry, NY 10522</div></div>
+    <div class="site-grid">
+      <section class="card"><div class="card-hd"><h2 id="siteTitle">Boundary survey</h2><span class="right" id="siteSource"></span></div><div class="site-stage"><img id="siteImg" alt="Mercy University site reference"></div></section>
+      <aside class="card site-side">
+        <div class="eyebrow">Campus context</div><h2 style="margin:4px 0 8px">Hudson River campus</h2><p id="siteContext"></p>
+        <h3>Buildings identified</h3><div class="chips" id="buildings"></div>
+        <h3>Site edges</h3><div class="chips" id="edges"></div>
+        <h3>Coordination notes</h3><ul id="siteNotes"></ul>
+        <h3>Source set</h3><ul id="siteSources"></ul>
+      </aside>
+    </div>
+  </main>
+  <p class="foot">Skeleton dashboard assembled from the shared Mercy University folder. Record and feasibility documents are not a substitute for a current field survey or verified facilities database.</p>
+</div>
+<div class="modal hidden" id="roomModal"><div class="modal-box"><div class="modal-hd"><h2 id="rmTitle"></h2><button class="modal-x" id="rmClose">&times;</button></div><div class="modal-bd" id="rmBody"></div></div></div>
+<script src="Mercy supporting documents/room_categories.js"></script>
+<script src="Mercy supporting documents/ficm_categories.js"></script>
+<script src="Mercy supporting documents/zone_plans.js"></script>
+<script src="Mercy supporting documents/plan_images.js"></script>
+<script src="Mercy supporting documents/schedules.js"></script>
+<script src="Mercy supporting documents/analysis_data.js"></script>
+<script>
+const fmt=n=>n==null?"—":Number(n).toLocaleString(undefined,{maximumFractionDigits:1});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const Z=window.MERCY_ZONE_PLANS||{floors:[]}, I=window.MERCY_INVENTORY||{rooms:[]}, A=window.MERCY_ANALYSIS||{mep:[],site:{}};
+const FICM=window.MERCY_FICM||{series:[],zones:{}};
+const rooms=I.rooms||[], floors=Z.floors||[];
+const ficmSeries=FICM.series||[];
+const ficmOf=name=>{
+  const code=FICM.zones?.[name];
+  return ficmSeries.find(s=>s.code===code)||{code:"—",label:"Unmapped",series:"—",assignable:true,description:""};
+};
+const ficmOrder=code=>{const i=ficmSeries.findIndex(s=>s.code===code);return i<0?999:i};
+const zoneTotalSF=name=>(window.MERCY_ZONE_SF||{})[name]||0;
+const sortByFicm=(a,b)=>{
+  const an=typeof a==="string"?a:a.name, bn=typeof b==="string"?b:b.name;
+  const oa=ficmOrder(ficmOf(an).code)-ficmOrder(ficmOf(bn).code);
+  if(oa)return oa;
+  const sa=typeof a==="string"?zoneTotalSF(a):(a.sf||0), sb=typeof b==="string"?zoneTotalSF(b):(b.sf||0);
+  return sb-sa;
+};
+const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+const HIT=38, HIT2=HIT*HIT;
+/* Plates come from plan_images.js as data URLs so the canvas stays readable on file:// pages. */
+const plateSrc=f=>(window.MERCY_PLAN_IMAGES||{})[f.img]||("Mercy supporting documents/"+f.img);
+function activate(view){
+  const b=document.querySelector('.tab[data-view="'+view+'"]'); if(!b)return;
+  document.querySelectorAll(".tab,.view").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); document.getElementById(view).classList.add("on");
+  // The plan canvas measures 0 while its tab is hidden, so the initial fit waits until it shows.
+  if(view==="plan")requestAnimationFrame(()=>{sizeCanvas();needFit?fitView():draw()});
+  if(view==="stack")requestAnimationFrame(buildStack);
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{try{history.replaceState(null,"","#"+b.dataset.view)}catch(e){}activate(b.dataset.view)});
+
+/* Which instructional rooms plausibly sit inside a given program zone. The 2021 zone plan
+   carries no room numbers, so these are candidates matched by program, not verified locations. */
+const ZONE_RULES=[
+  [/GENERAL (USE )?CLASSROOM/i, r=>r.roomType==="General-Purpose Classroom"],
+  [/SIM ?LAB|SIMULATION/i,      r=>/sim|skills/i.test(r.specialty||"")],
+  [/VET ?TECH|VETERINARY/i,     r=>/veterinar/i.test(r.specialty||"")],
+  [/HEALTH.*SCIENCE|NATURAL SCIENCE|SCIENCE LAB/i, r=>r.roomType!=="General-Purpose Classroom"&&!/sim|skills|veterinar|computer/i.test(r.specialty||"")]
+];
+const ruleFor=name=>(ZONE_RULES.find(([re])=>re.test(name))||[])[1]||null;
+function roomsForZone(zone,floorId){const t=ruleFor(zone.name);return t?rooms.filter(r=>r.floor===floorId&&t(r)):[]}
+function zoneForRoom(r){const f=floors.find(x=>x.id===r.floor);if(!f)return null;return f.zones.find(z=>{const t=ruleFor(z.name);return t&&t(r)})||null}
+
+const floorSel=document.getElementById("floorSel"), planStage=document.getElementById("planStage"),
+      planCanvas=document.getElementById("planCanvas"), pctx=planCanvas.getContext("2d"),
+      sampleCanvas=document.createElement("canvas"), sampleCtx=sampleCanvas.getContext("2d",{willReadFrequently:true}),
+      baseImg=new Image(), maskCache=new Map(), view={scale:1,x:0,y:0};
+let currentFloor=null, selectedZone=null, imgReady=false, canRead=true, needFit=true;
+
+floorSel.innerHTML=floors.map(f=>`<option value="${esc(f.id)}">${esc(f.label)}</option>`).join("");
+function showFloor(){
+  const f=floors.find(x=>x.id===floorSel.value)||floors[0]; if(!f)return;
+  currentFloor=f; selectedZone=null; imgReady=false; needFit=true; maskCache.clear();
+  zoneDetail.classList.add("hidden");
+  floorTitle.textContent=f.label+" — program zones"; zoneCount.textContent=f.zones.length+" types";
+  const ordered=[...f.zones].map((z,i)=>({z,i})).sort((a,b)=>sortByFicm(a.z,b.z));
+  let html="", last="";
+  ordered.forEach(({z,i})=>{
+    const fc=ficmOf(z.name);
+    if(fc.code!==last){
+      last=fc.code;
+      const sum=f.zones.filter(x=>ficmOf(x.name).code===fc.code).reduce((s,x)=>s+x.sf,0);
+      html+=`<div class="leg-grp${fc.assignable?"":" na"}"><span class="code">${esc(fc.series)}</span><span class="ttl">${esc(fc.label)}</span><span class="sum">${fmt(sum)} SF</span></div>`;
+    }
+    html+=`<div class="leg" data-i="${i}"><i class="sw" style="background:${z.color}"></i><b>${esc(z.name)}<span class="serie">${esc(fc.series)}</span></b><span>${fmt(z.sf)} SF</span></div>`;
+  });
+  legend.innerHTML=html+`<div class="ficm-note">Grouped by FICM series · nonassignable categories last</div>`;
+  legend.querySelectorAll(".leg").forEach(el=>el.onclick=()=>selectZone(f.zones[+el.dataset.i]));
+  const inv=rooms.filter(r=>r.floor===f.id), invASF=inv.reduce((s,r)=>s+r.asf,0);
+  planStats.innerHTML=stats([
+    [fmt(f.sf),"Zone-plan SF"],[fmt(f.zones.length),"Program types"],[fmt(inv.length),"Instructional rooms"],
+    [fmt(invASF),"Instructional ASF"],[fmt(inv.reduce((s,r)=>s+r.seats,0)),"Instructional seats"]
+  ]);
+  const next=plateSrc(f);
+  if(baseImg.getAttribute("src")===next&&baseImg.complete&&baseImg.naturalWidth)onImgReady();
+  else baseImg.src=next;
+}
+floorSel.onchange=showFloor;
+let pendingReady=null;
+function whenReady(cb){imgReady?cb():pendingReady=cb}
+function onImgReady(){
+  sampleCanvas.width=baseImg.naturalWidth; sampleCanvas.height=baseImg.naturalHeight;
+  sampleCtx.drawImage(baseImg,0,0);
+  try{sampleCtx.getImageData(0,0,1,1);canRead=true}
+  catch(e){canRead=false;document.getElementById("planHint").textContent="Zone picking is unavailable — regenerate plan_images.js or serve this folder over http"}
+  imgReady=true; sizeCanvas(); fitView();
+  if(pendingReady){const cb=pendingReady;pendingReady=null;cb()}
+}
+baseImg.onload=onImgReady;
+
+function sizeCanvas(){
+  const r=planCanvas.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  if(!r.width||!r.height)return;
+  planCanvas.width=Math.round(r.width*dpr); planCanvas.height=Math.round(r.height*dpr);
+}
+function fitView(){
+  const r=planCanvas.getBoundingClientRect(); if(!imgReady||!r.width)return;
+  const s=Math.min(r.width/baseImg.naturalWidth,r.height/baseImg.naturalHeight)*.97;
+  view.scale=s; view.x=(r.width-baseImg.naturalWidth*s)/2; view.y=(r.height-baseImg.naturalHeight*s)/2;
+  needFit=false; draw();
+}
+function maskFor(zone){
+  if(maskCache.has(zone.color))return maskCache.get(zone.color);
+  const w=sampleCanvas.width,h=sampleCanvas.height,[tr,tg,tb]=rgb(zone.color);
+  const src=sampleCtx.getImageData(0,0,w,h).data, out=sampleCtx.createImageData(w,h), d=out.data;
+  for(let i=0;i<src.length;i+=4){
+    const dr=src[i]-tr,dg=src[i+1]-tg,db=src[i+2]-tb;
+    if(dr*dr+dg*dg+db*db<=HIT2){d[i]=src[i];d[i+1]=src[i+1];d[i+2]=src[i+2];d[i+3]=255}
+  }
+  const cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(out,0,0);
+  maskCache.set(zone.color,cv);return cv;
+}
+function draw(){
+  const dpr=window.devicePixelRatio||1;
+  pctx.setTransform(1,0,0,1,0,0);
+  pctx.fillStyle="#eef2f5"; pctx.fillRect(0,0,planCanvas.width,planCanvas.height);
+  if(!imgReady)return;
+  pctx.setTransform(dpr*view.scale,0,0,dpr*view.scale,dpr*view.x,dpr*view.y);
+  pctx.fillStyle="#fff"; pctx.fillRect(0,0,baseImg.naturalWidth,baseImg.naturalHeight);
+  pctx.drawImage(baseImg,0,0);
+  if(selectedZone&&canRead){
+    pctx.globalAlpha=.87; pctx.fillStyle="#fff"; pctx.fillRect(0,0,baseImg.naturalWidth,baseImg.naturalHeight);
+    pctx.globalAlpha=1; pctx.drawImage(maskFor(selectedZone),0,0);
+  }
+}
+function toImage(e){const r=planCanvas.getBoundingClientRect();return{x:(e.clientX-r.left-view.x)/view.scale,y:(e.clientY-r.top-view.y)/view.scale}}
+function zoneAt(p){
+  if(!imgReady||!canRead||!currentFloor)return null;
+  if(p.x<0||p.y<0||p.x>=sampleCanvas.width||p.y>=sampleCanvas.height)return null;
+  const c=sampleCtx.getImageData(p.x|0,p.y|0,1,1).data;
+  let best=null,bd=1e9;
+  currentFloor.zones.forEach(z=>{const t=rgb(z.color),d=Math.hypot(c[0]-t[0],c[1]-t[1],c[2]-t[2]);if(d<bd){bd=d;best=z}});
+  return bd<HIT?best:null;
+}
+function selectZone(z){
+  selectedZone=(selectedZone&&z&&selectedZone.name===z.name)?null:z;
+  legend.querySelectorAll(".leg").forEach(el=>el.classList.toggle("on",!!selectedZone&&currentFloor.zones[+el.dataset.i].name===selectedZone.name));
+  renderZoneDetail(); draw();
+}
+function renderZoneDetail(){
+  const z=selectedZone;
+  if(!z){zoneDetail.classList.add("hidden");zoneDetail.innerHTML="";return}
+  const share=currentFloor.sf?100*z.sf/currentFloor.sf:null, cand=roomsForZone(z,currentFloor.id), fc=ficmOf(z.name);
+  zoneDetail.classList.remove("hidden");
+  zoneDetail.innerHTML=`<div class="zt"><i style="background:${z.color}"></i><span>${esc(z.name)}</span></div>
+    <dl><dt>Zone area</dt><dd>${fmt(z.sf)} SF</dd>
+        <dt>Share of floor</dt><dd>${share==null?"—":share.toFixed(1)+"%"}</dd>
+        <dt>FICM series</dt><dd>${esc(fc.series)} · ${esc(fc.label)}</dd>
+        <dt>Assignable</dt><dd>${fc.assignable?"Yes":"No — nonassignable"}</dd>
+        <dt>Floor</dt><dd>${esc(currentFloor.label)}</dd>
+        <dt>Source</dt><dd>2021 zone plan</dd></dl>
+    <p class="cite" style="margin:10px 0 0">${esc(fc.description||"")}</p>
+    <div class="rl">Instructional rooms in this program</div>
+    <div class="rooms">${cand.length?cand.map(r=>`<button data-room="${esc(r.room)}">${esc(r.room)} · ${fmt(r.asf)} SF</button>`).join(""):`<span class="cite">The 2021 plan carries no room numbers, and no room in the April 2025 instructional inventory matches this program on this floor.</span>`}</div>
+    <button class="clear">Clear selection</button>`;
+  zoneDetail.querySelectorAll("[data-room]").forEach(b=>b.onclick=()=>openRoom(b.dataset.room));
+  zoneDetail.querySelector(".clear").onclick=()=>selectZone(null);
+}
+
+let drag=null,lastMoved=0;
+planCanvas.addEventListener("mousedown",e=>{drag={x:e.clientX,y:e.clientY,ox:view.x,oy:view.y,moved:0};planStage.classList.add("grabbing")});
+window.addEventListener("mouseup",()=>{if(drag){lastMoved=drag.moved;planStage.classList.remove("grabbing")}drag=null});
+planCanvas.addEventListener("mousemove",e=>{
+  if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy));view.x=drag.ox+dx;view.y=drag.oy+dy;draw();planTip.style.display="none";return}
+  const z=zoneAt(toImage(e));
+  if(z){planTip.innerHTML=`<b>${esc(z.name)}</b>${fmt(z.sf)} SF · click to inspect`;planTip.style.display="block";planTip.style.left=(e.clientX+14)+"px";planTip.style.top=(e.clientY+14)+"px"}
+  else planTip.style.display="none";
+});
+planCanvas.addEventListener("mouseleave",()=>planTip.style.display="none");
+planCanvas.addEventListener("click",e=>{if(lastMoved>4)return;selectZone(zoneAt(toImage(e)))});
+planCanvas.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.0016))},{passive:false});
+function zoomAt(cx,cy,k){
+  if(!imgReady)return;
+  const r=planCanvas.getBoundingClientRect(),px=cx-r.left,py=cy-r.top,s=Math.min(24,Math.max(.05,view.scale*k)),f=s/view.scale;
+  view.x=px-(px-view.x)*f; view.y=py-(py-view.y)*f; view.scale=s; draw();
+}
+zoomIn.onclick=()=>{const r=planCanvas.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,1.3)};
+zoomOut.onclick=()=>{const r=planCanvas.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.3)};
+zoomFit.onclick=fitView;
+window.addEventListener("resize",()=>{sizeCanvas();fitView()});
+
+function openRoom(code){
+  const r=rooms.find(x=>x.room===code); if(!r)return;
+  const z=zoneForRoom(r), use=Object.entries(r.departmentUse||{}).sort((a,b)=>b[1]-a[1]);
+  rmTitle.textContent=r.room;
+  rmBody.innerHTML=`<div>${pill(r.roomType)}${r.specialty?` <span class="pill">${esc(r.specialty)}</span>`:""}</div>
+    <dl class="kv" style="margin-top:14px">
+      <dt>Floor</dt><dd>${r.floor?esc(floorLabel(r.floor)):"Not identified in the report"}</dd>
+      <dt>Assignable SF</dt><dd>${fmt(r.asf)}</dd>
+      <dt>Seats</dt><dd>${fmt(r.seats)}</dd>
+      <dt>ASF per seat</dt><dd>${fmt(r.asfPerSeat)}</dd>
+      <dt>Course sections</dt><dd>${fmt(r.courseCount)}</dd>
+      <dt>Seat occupancy</dt><dd>${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</dd>
+      <dt>Weekly hours used</dt><dd>${fmt(r.weeklyHours)}</dd>
+      <dt>Share of target hours</dt><dd>${r.hoursPercent==null?"—":r.hoursPercent+"%"}</dd>
+      <dt>Program zone</dt><dd>${z?esc(z.name)+" (inferred)":"Not mapped"}</dd>
+      <dt>FICM series</dt><dd>${(()=>{const fc=ficmOf(z?z.name:"");return z?`${esc(fc.series)} · ${esc(fc.label)}`: "—"})()}</dd>
+    </dl>
+    <h4>Scheduled users — Fall 2023 daytime</h4>
+    ${use.length?`<dl class="kv">${use.map(([s,n])=>`<dt>${esc(s)}</dt><dd>${n} section${n===1?"":"s"}</dd>`).join("")}</dl>`:`<p class="cite" style="margin:0">No daytime course sections were scheduled in this room in the appendix.</p>`}
+    ${r.comment?`<h4>Report comment</h4><p style="margin:0;color:#4f5f70">${esc(r.comment)}</p>`:""}
+    <div class="btnrow">${z?`<button id="rmShow">Show zone on plan</button>`:""}<button class="ghost" id="rmDone">Close</button></div>`;
+  roomModal.classList.remove("hidden");
+  rmDone.onclick=closeRoom;
+  if(z)document.getElementById("rmShow").onclick=()=>{
+    closeRoom();
+    activate("plan");
+    floorSel.value=r.floor; showFloor();
+    whenReady(()=>selectZone(z));
+    planStage.scrollIntoView({behavior:"smooth",block:"center"});
+  };
+}
+const closeRoom=()=>roomModal.classList.add("hidden");
+rmClose.onclick=closeRoom;
+roomModal.onclick=e=>{if(e.target===roomModal)closeRoom()};
+window.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!roomModal.classList.contains("hidden"))closeRoom();else if(selectedZone)selectZone(null)});
+const floorLabel=id=>(floors.find(f=>f.id===id)||{}).label||id;
+function stats(items){return items.map(x=>`<div class="stat"><div class="n">${x[0]}</div><div class="l">${x[1]}</div></div>`).join("")}
+const types=[...new Set(rooms.map(r=>r.roomType))];roomType.innerHTML+=types.map(x=>`<option>${esc(x)}</option>`).join("");
+function pill(t){return `<span class="pill ${t.startsWith("Teaching")?"lab":t.startsWith("Open")?"open":""}">${esc(t)}</span>`}
+function renderRooms(){
+  const q=roomSearch.value.trim().toLowerCase(), fl=roomFloor.value, ty=roomType.value;
+  const out=rooms.filter(r=>(!q||JSON.stringify(r).toLowerCase().includes(q))&&(!fl||r.floor===fl)&&(!ty||r.roomType===ty));
+  roomCount.textContent=`${out.length} of ${rooms.length} rooms · ${fmt(out.reduce((s,r)=>s+r.asf,0))} ASF`;
+  document.getElementById("rooms").innerHTML=out.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b>${r.specialty?`<div class="cite">${esc(r.specialty)}</div>`:""}</td><td>${r.floor||"—"}</td><td>${pill(r.roomType)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.asfPerSeat)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${esc((r.departments||[]).join(", ")||(r.specialty?"Stated specialty — see label":"No Fall 2023 daytime schedule"))}</td></tr>`).join("");
+}roomSearch.oninput=roomFloor.onchange=roomType.onchange=renderRooms;
+document.body.addEventListener("click",e=>{
+  const open=e.target.closest("[data-openfloor]");
+  if(open){e.preventDefault();activate("plan");floorSel.value=open.dataset.openfloor;showFloor();return}
+  const link=e.target.closest("[data-roomlink]"); if(link){e.preventDefault();openRoom(link.dataset.roomlink);return}
+  const tr=e.target.closest("tr[data-room]"); if(tr)openRoom(tr.dataset.room);
+});
+/* ---------- Exploded building stack ---------- */
+const D2R=Math.PI/180, RANK=id=>id==="G"?0:(+id||0);
+const stackFloors=[...floors].sort((a,b)=>RANK(b.id)-RANK(a.id));
+const plate=new Map(), hlCache=new Map(), blobCache=new Map();
+let stackLoaded=false, stackLoading=false, selectedPlate=null;
+const zoneOn=(f,name)=>f.zones.find(z=>z.name===name)||null;
+const zoneSF=name=>floors.reduce((s,f)=>{const z=zoneOn(f,name);return s+(z?z.sf:0)},0);
+const zoneNames=[...new Set(floors.flatMap(f=>f.zones.map(z=>z.name)))].sort(sortByFicm);
+(function fillStackZones(){
+  let html=`<option value="">No highlight — plates only</option>`, last="";
+  zoneNames.forEach(n=>{
+    const fc=ficmOf(n);
+    if(fc.code!==last){
+      if(last)html+=`</optgroup>`;
+      last=fc.code;
+      html+=`<optgroup label="${esc(fc.series+" · "+fc.label+(fc.assignable?"":" (nonassignable)"))}">`;
+    }
+    html+=`<option value="${esc(n)}">${esc(n)} · ${fmt(zoneSF(n))} SF</option>`;
+  });
+  if(last)html+=`</optgroup>`;
+  stackZone.innerHTML=html;
+  if(zoneNames.includes("GENERAL CLASSROOMS"))stackZone.value="GENERAL CLASSROOMS";
+})();
+
+/* Reduce a zone plan to the reference's white-sheet-with-navy-lines look. A pixel is drawn as
+   linework only if it is dark, near-neutral, and thin — probing R pixels out in each direction
+   keeps strokes and text while emptying the interiors of solid dark fills. */
+function lineArt(raw){
+  const w=raw.width,h=raw.height,src=raw.data,n=w*h,R=6;
+  const dark=new Uint8Array(n);
+  for(let p=0;p<n;p++){
+    const i=p*4,r=src[i],g=src[i+1],b=src[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+    if(mx<150&&mx-mn<34)dark[p]=1;
+  }
+  const out=new ImageData(w,h),d=out.data;
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const p=y*w+x,i=p*4;
+      const line=dark[p]&&(x<R||!dark[p-R]||x>=w-R||!dark[p+R]||y<R||!dark[p-R*w]||y>=h-R||!dark[p+R*w]);
+      d[i]=line?34:255; d[i+1]=line?68:255; d[i+2]=line?108:255; d[i+3]=255;
+    }
+  }
+  const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);return c;
+}
+function hlFor(fid,name){
+  const k=fid+"|"+name; if(hlCache.has(k))return hlCache.get(k);
+  const f=floors.find(x=>x.id===fid), z=f?zoneOn(f,name):null, pd=plate.get(fid);
+  let cv=null;
+  if(z&&pd){
+    const w=pd.w,h=pd.h,src=pd.raw.data,out=new ImageData(w,h),d=out.data,[tr,tg,tb]=rgb(z.color);
+    let hit=0;
+    for(let i=0;i<src.length;i+=4){
+      const dr=src[i]-tr,dg=src[i+1]-tg,db=src[i+2]-tb;
+      if(dr*dr+dg*dg+db*db<=HIT2){d[i]=124;d[i+1]=201;d[i+2]=155;d[i+3]=232;hit++}
+    }
+    if(hit){cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(out,0,0)}
+  }
+  hlCache.set(k,cv);return cv;
+}
+/* Connected painted regions of one program on one plate, sampled every few pixels. */
+function blobsFor(fid,name,step){
+  step=step||3;
+  const k=fid+"|"+name; if(blobCache.has(k))return blobCache.get(k);
+  const f=floors.find(x=>x.id===fid), z=f?zoneOn(f,name):null, pd=plate.get(fid);
+  if(!z||!pd){blobCache.set(k,[]);return []}
+  const w=pd.w,h=pd.h,src=pd.raw.data,[tr,tg,tb]=rgb(z.color);
+  const gw=Math.ceil(w/step),gh=Math.ceil(h/step),g=new Uint8Array(gw*gh);
+  for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){
+    const i=((gy*step)*w+gx*step)*4,dr=src[i]-tr,dg=src[i+1]-tg,db=src[i+2]-tb;
+    if(dr*dr+dg*dg+db*db<=HIT2)g[gy*gw+gx]=1;
+  }
+  const seen=new Uint8Array(gw*gh),out=[],st=[];
+  for(let s=0;s<g.length;s++){
+    if(!g[s]||seen[s])continue;
+    st.length=0;st.push(s);seen[s]=1;let n=0,sx=0,sy=0;
+    while(st.length){
+      const p=st.pop(),px=p%gw,py=(p/gw)|0;n++;sx+=px;sy+=py;
+      if(px>0&&g[p-1]&&!seen[p-1]){seen[p-1]=1;st.push(p-1)}
+      if(px<gw-1&&g[p+1]&&!seen[p+1]){seen[p+1]=1;st.push(p+1)}
+      if(py>0&&g[p-gw]&&!seen[p-gw]){seen[p-gw]=1;st.push(p-gw)}
+      if(py<gh-1&&g[p+gw]&&!seen[p+gw]){seen[p+gw]=1;st.push(p+gw)}
+    }
+    out.push({n:n,x:sx/n*step,y:sy/n*step});
+  }
+  out.sort((a,b)=>b.n-a.n);blobCache.set(k,out);return out;
+}
+function loadImage(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error(src));i.src=src})}
+async function buildStack(){
+  if(stackLoading)return; if(stackLoaded){renderStack();return}
+  stackLoading=true;
+  try{
+    for(const f of stackFloors){
+      const img=await loadImage(plateSrc(f)), w=img.naturalWidth, h=img.naturalHeight;
+      const rc=document.createElement("canvas");rc.width=w;rc.height=h;
+      const rx=rc.getContext("2d",{willReadFrequently:true});rx.drawImage(img,0,0);
+      const raw=rx.getImageData(0,0,w,h);
+      plate.set(f.id,{w:w,h:h,raw:raw,art:lineArt(raw)});
+    }
+    stackLoaded=true;stackMsg.classList.add("hidden");renderStack();
+  }catch(e){stackMsg.textContent="Floor plates could not be read. Re-run build_plan_images.py, or open this folder over a local web server."}
+  finally{stackLoading=false}
+}
+function renderStack(){
+  if(!stackLoaded)return;
+  const name=stackZone.value, tilt=+ctlTilt.value, rot=+ctlRot.value, spread=+ctlGap.value/100;
+  const sr=Math.abs(Math.sin(rot*D2R)), cr=Math.abs(Math.cos(rot*D2R)), ct=Math.cos(tilt*D2R);
+  const stageW=stackStage.clientWidth||1000, n=stackFloors.length;
+  const maxW=Math.max(...stackFloors.map(f=>plate.get(f.id).w)), maxH=Math.max(...stackFloors.map(f=>plate.get(f.id).h));
+  let boxW=Math.min(940,Math.max(360,stageW-260)), unit=boxW/maxW, boxH=maxH*unit;
+  let projW=boxW*cr+boxH*sr, projH=(boxW*sr+boxH*cr)*ct;
+  const fit=Math.min(1,(stageW-230)/projW); unit*=fit; projW*=fit; projH*=fit;
+  // Spread is a share of a plate's own projected height, so the separation reads the same at any
+  // tilt or rotation. Headroom above each plate leaves room for the callout boxes; the bottom
+  // plate needs less because a rotated plate's lowest corner sits well inside its bounding box.
+  const HEAD=.5, FOOT=.44, MAXH=1500;
+  const shrink=Math.min(1,(MAXH-52)/(projH*(HEAD+(n-1)*spread+FOOT)));
+  unit*=shrink; projW*=shrink; projH*=shrink;
+  const gap=projH*spread, top0=projH*HEAD+34, stageH=top0+(n-1)*gap+projH*FOOT+18;
+  stackStage.style.height=Math.round(stageH)+"px";
+  const inv=`rotateZ(${-rot}deg) rotateX(${-tilt}deg)`;
+  stackScene.innerHTML="";
+  stackFloors.forEach((f,i)=>{
+    const pd=plate.get(f.id), z=name?zoneOn(f,name):null, w=pd.w*unit, h=pd.h*unit;
+    const el=document.createElement("div");
+    el.className="plate"+(name&&!z?" dim":"")+(selectedPlate===f.id?" sel":"")+(selectedPlate&&selectedPlate!==f.id?" faded":"");
+    el.style.top=(top0+i*gap)+"px";
+    // Seen from above, an upper plate occludes the ones beneath it when spread is tight.
+    el.style.zIndex=(n-i)+(selectedPlate===f.id?100:0);
+    el.title=f.label;
+    const inner=document.createElement("div");
+    inner.className="plate-inner";inner.style.width=w+"px";inner.style.height=h+"px";
+    inner.style.transform=`translate(-50%,-50%) rotateX(${tilt}deg) rotateZ(${rot}deg)`;
+    const cv=document.createElement("canvas");cv.width=pd.w;cv.height=pd.h;
+    cv.style.width=w+"px";cv.style.height=h+"px";
+    const cx=cv.getContext("2d");cx.drawImage(pd.art,0,0);
+    const hl=name?hlFor(f.id,name):null; if(hl)cx.drawImage(hl,0,0);
+    inner.appendChild(cv);
+    if(z){
+      const bl=blobsFor(f.id,name), tot=bl.reduce((s,b)=>s+b.n,0)||1;
+      bl.filter(b=>b.n/tot>=.07).slice(0,5).forEach(b=>{
+        const pin=document.createElement("div");pin.className="pin";
+        pin.style.left=(100*b.x/pd.w)+"%";pin.style.top=(100*b.y/pd.h)+"%";
+        pin.innerHTML=`<div class="pin-i" style="transform:${inv}"><div class="pin-box">${fmt(Math.round(z.sf*b.n/tot))} SF</div><div class="pin-stem"></div><div class="pin-dot"></div></div>`;
+        inner.appendChild(pin);
+      });
+    }
+    el.appendChild(inner);
+    el.onclick=()=>{selectedPlate=selectedPlate===f.id?null:f.id;renderStack()};
+    stackScene.appendChild(el);
+  });
+  const railX=Math.min(stageW-170,stageW/2+projW/2+30), leftX=Math.max(14,stageW/2-projW/2-30);
+  stackRail.innerHTML=`<div class="rail-line" style="left:${leftX}px;top:12px;bottom:12px"></div>`+
+    `<div class="rail-line" style="left:${railX-16}px;top:12px;bottom:12px"></div>`+
+    stackFloors.map((f,i)=>{
+      const z=name?zoneOn(f,name):null;
+      return `<div class="flabel${name&&!z?" off":""}${selectedPlate===f.id?" sel":""}" style="left:${railX}px;top:${top0+i*gap}px">${esc(f.label)}<small>${fmt(f.sf)} SF${z?" · "+fmt(z.sf)+" SF here":""}</small><a href="#" class="flink" data-openfloor="${esc(f.id)}">Open plan →</a></div>`;
+    }).join("");
+  renderPlateCard();
+  stackTitle.textContent=name?`Main Hall — ${name.toLowerCase()} through the building`:"Main Hall — exploded stack";
+  const on=stackFloors.filter(f=>zoneOn(f,name));
+  const cands=name?stackFloors.flatMap(f=>{const z=zoneOn(f,name);return z?roomsForZone(z,f.id):[]}):[];
+  stackStats.innerHTML=name
+    ? stats([[fmt(zoneSF(name)),"Program SF"],[`${on.length} of ${stackFloors.length}`,"Floors with this program"],
+        [fmt(100*zoneSF(name)/(Object.values(window.MERCY_ZONE_SF||{}).reduce((a,b)=>a+b,0)||1))+"%","Share of zoned SF"],
+        [fmt(cands.length),"Matching inventory rooms"],[fmt(cands.reduce((s,r)=>s+r.seats,0)),"Seats in those rooms"]])
+    : stats([[fmt(stackFloors.length),"Floor plates"],[fmt(stackFloors.reduce((s,f)=>s+f.sf,0)),"Zoned SF"],
+        [fmt(zoneNames.length),"Distinct programs"],[fmt(rooms.length),"Instructional rooms"],[fmt(rooms.reduce((s,r)=>s+r.seats,0)),"Seats"]]);
+  stackTblTitle.textContent=name?`${name} by floor`:"Floor plates";
+  stackRows.innerHTML=stackFloors.map(f=>{
+    const z=name?zoneOn(f,name):null, bl=z?blobsFor(f.id,name):[], tot=bl.reduce((s,b)=>s+b.n,0)||1;
+    const cand=z?roomsForZone(z,f.id):[];
+    return `<tr><td><b>${esc(f.label)}</b></td><td class="num">${z?fmt(z.sf):"—"}</td><td class="num">${z&&f.sf?(100*z.sf/f.sf).toFixed(1)+"%":"—"}</td><td class="num">${z?bl.filter(b=>b.n/tot>=.02).length:"—"}</td><td>${cand.length?cand.map(r=>`<a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a>`).join(", "):`<span class="cite">${z?"No inventory room matches this program":"Program not on this floor"}</span>`}</td></tr>`;
+  }).join("");
+}
+function renderPlateCard(){
+  const f=stackFloors.find(x=>x.id===selectedPlate);
+  if(!f){plateCard.classList.add("hidden");plateCard.innerHTML="";return}
+  const inv=rooms.filter(r=>r.floor===f.id);
+  const grouped=[...f.zones].sort(sortByFicm);
+  let body="", last="";
+  grouped.forEach(z=>{
+    const fc=ficmOf(z.name);
+    if(fc.code!==last){
+      last=fc.code;
+      const sum=f.zones.filter(x=>ficmOf(x.name).code===fc.code).reduce((s,x)=>s+x.sf,0);
+      body+=`</div><h4${fc.assignable?"":' class="na"'}>${esc(fc.series)} · ${esc(fc.label)}${fc.assignable?"":" · nonassignable"} — ${fmt(sum)} SF</h4><div class="chips">`;
+    }
+    body+=`<span class="chip"><i style="background:${z.color}"></i>${esc(z.name)} <small>${fmt(z.sf)} SF</small></span>`;
+  });
+  plateCard.classList.remove("hidden");
+  plateCard.innerHTML=`<div class="card-hd"><h2>${esc(f.label)}</h2><span class="right">${f.zones.length} program zones · ${fmt(f.sf)} zoned SF</span></div>
+    <div class="plate-card">
+      <dl class="kv">
+        <dt>Zoned area</dt><dd>${fmt(f.sf)} SF</dd>
+        <dt>Assignable</dt><dd>${fmt(f.zones.reduce((s,z)=>s+(ficmOf(z.name).assignable?z.sf:0),0))} SF</dd>
+        <dt>Nonassignable</dt><dd>${fmt(f.zones.reduce((s,z)=>s+(ficmOf(z.name).assignable?0:z.sf),0))} SF</dd>
+        <dt>Instructional rooms</dt><dd>${fmt(inv.length)}${inv.length?` · ${fmt(inv.reduce((s,r)=>s+r.asf,0))} ASF · ${fmt(inv.reduce((s,r)=>s+r.seats,0))} seats`:""}</dd>
+      </dl>
+      ${body.replace(/^<\/div>/,"")}</div>
+      ${inv.length?`<h4>Inventoried rooms on this floor</h4><div class="chips">${inv.map(r=>`<span class="chip"><a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a> <small>${fmt(r.asf)} SF</small></span>`).join("")}</div>`:""}
+      <div class="btnrow"><button data-openfloor="${esc(f.id)}">Open on the Plan tab</button><button class="ghost" id="plateClear">Clear selection</button></div>
+    </div>`;
+  document.getElementById("plateClear").onclick=()=>{selectedPlate=null;renderStack()};
+}
+stackZone.onchange=renderStack;
+ctlTilt.oninput=ctlRot.oninput=ctlGap.oninput=renderStack;
+window.addEventListener("resize",()=>{if(document.getElementById("stack").classList.contains("on"))renderStack()});
+
+function bars(el,data,total){
+  el.innerHTML=data.map(([n,v,suffix])=>`<div class="barrow"><div class="nm">${esc(n)}</div><div class="track"><div class="fill" style="width:${Math.max(1,100*v/total)}%"></div></div><div class="val">${fmt(v)}${suffix||""}</div></div>`).join("");
+}
+function ficmBars(el,zoneSFMap,total){
+  const byCode={};
+  Object.entries(zoneSFMap).forEach(([name,sf])=>{
+    const fc=ficmOf(name);
+    const g=byCode[fc.code]||(byCode[fc.code]={fc,sf:0,zones:[]});
+    g.sf+=sf; g.zones.push([name,sf]);
+  });
+  let html="";
+  ficmSeries.forEach(s=>{
+    const g=byCode[s.code]; if(!g)return;
+    html+=`<div class="chart-grp${s.assignable?"":" na"}">${esc(s.series)} · ${esc(s.label)}${s.assignable?"":" · nonassignable"} · ${fmt(g.sf)} SF</div>`;
+    g.zones.sort((a,b)=>b[1]-a[1]).forEach(([n,v])=>{
+      html+=`<div class="barrow"><div class="nm">${esc(n)}</div><div class="track"><div class="fill" style="width:${Math.max(1,100*v/total)}%"></div></div><div class="val">${fmt(v)} SF</div></div>`;
+    });
+  });
+  // Any unmapped zones
+  Object.keys(byCode).filter(c=>!ficmSeries.some(s=>s.code===c)).forEach(c=>{
+    const g=byCode[c];
+    html+=`<div class="chart-grp">Unmapped · ${fmt(g.sf)} SF</div>`;
+    g.zones.sort((a,b)=>b[1]-a[1]).forEach(([n,v])=>{
+      html+=`<div class="barrow"><div class="nm">${esc(n)}</div><div class="track"><div class="fill" style="width:${Math.max(1,100*v/total)}%"></div></div><div class="val">${fmt(v)} SF</div></div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+const totalZoneSF=Object.values(window.MERCY_ZONE_SF||{}).reduce((a,b)=>a+b,0), totalASF=rooms.reduce((a,r)=>a+r.asf,0), totalSeats=rooms.reduce((a,r)=>a+r.seats,0);
+const assignableSF=Object.entries(window.MERCY_ZONE_SF||{}).reduce((s,[n,v])=>s+(ficmOf(n).assignable?v:0),0);
+const nonassignSF=totalZoneSF-assignableSF;
+analysisStats.innerHTML=stats([[fmt(totalZoneSF),"Zone-plan SF"],[fmt(assignableSF),"Assignable SF"],[fmt(nonassignSF),"Nonassignable SF"],[fmt(rooms.length),"Instructional rooms"],[fmt(totalSeats),"Seats"]]);
+ficmBars(zoneChart,window.MERCY_ZONE_SF||{},totalZoneSF);
+ficmRows.innerHTML=ficmSeries.map(s=>{
+  const zones=Object.entries(window.MERCY_ZONE_SF||{}).filter(([n])=>ficmOf(n).code===s.code).sort((a,b)=>b[1]-a[1]);
+  if(!zones.length)return "";
+  const sum=zones.reduce((a,[,v])=>a+v,0);
+  return `<tr class="series-row${s.assignable?"":" na"}"><td><b>${esc(s.label)}</b><div class="cite">${esc(s.description)}</div></td><td>${esc(s.series)}</td><td class="num">${fmt(sum)}</td><td class="num">${(100*sum/totalZoneSF).toFixed(1)}%</td><td>${s.assignable?"Assignable":"Nonassignable"}</td></tr>`+
+    zones.map(([n,v])=>`<tr class="zone-row"><td>${esc(n)}</td><td>${esc(s.series)}</td><td class="num">${fmt(v)}</td><td class="num">${(100*v/totalZoneSF).toFixed(1)}%</td><td></td></tr>`).join("");
+}).join("");
+const byType={};rooms.forEach(r=>{const x=byType[r.roomType]||(byType[r.roomType]={sf:0,n:0,seats:0});x.sf+=r.asf;x.n++;x.seats+=r.seats});
+bars(typeChart,Object.entries(byType).map(([n,x])=>[`${n} (${x.n} rooms)`,x.sf," SF"]).sort((a,b)=>b[1]-a[1]),totalASF);
+const schoolUse={};
+rooms.forEach(r=>Object.entries(r.departmentUse||{}).forEach(([school,count])=>{
+  const x=schoolUse[school]||(schoolUse[school]={courses:0,rooms:[]});
+  x.courses+=count;x.rooms.push([r.room,count]);
+}));
+if(Object.keys(schoolUse).length){
+  const schoolRows=Object.entries(schoolUse).sort((a,b)=>b[1].courses-a[1].courses);
+  deptPanel.innerHTML=`<div class="card-hd"><h2>Scheduled users by school</h2><span class="right">Fall 2023 daytime course appendix · not permanent ownership</span></div>
+  <div class="table-wrap"><table><thead><tr><th>School</th><th class="num">Course sections</th><th class="num">Rooms used</th><th>Rooms, ranked by sections</th></tr></thead><tbody>${
+    schoolRows.map(([school,x])=>`<tr><td><b>${esc(school)}</b></td><td class="num">${x.courses}</td><td class="num">${x.rooms.length}</td><td>${x.rooms.sort((a,b)=>b[1]-a[1]).map(v=>`<a href="#" data-roomlink="${esc(v[0])}">${esc(v[0])}</a> (${v[1]})`).join(", ")}</td></tr>`).join("")
+  }</tbody></table></div>`;
+}
+mepCards.innerHTML=(A.mep||[]).map(m=>`<article class="mep"><div class="disc">${esc(m.discipline)}</div><h3>${esc(m.title)}</h3><p>${esc(m.detail)}</p><div class="cite">${esc(m.source)} · ${esc(m.sheets)}</div></article>`).join("");
+utilRows.innerHTML=[...rooms].sort((a,b)=>(b.weeklyHours??-1)-(a.weeklyHours??-1)).map(r=>`<tr data-room="${esc(r.room)}"><td><b>${r.room}</b></td><td>${pill(r.roomType)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.courseCount)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${esc(r.comment)}</td></tr>`).join("");
+const siteViews=[
+  ["Boundary survey","site_boundary.png","MJ819.08 boundary survey"],
+  ["Utilities","site_utilities.png","2-19-26 All Utilities"],
+  ["Aerial context","site_overhead.png","DF Site Overhead Image 2025"],
+  ["MEP overall","mep_overall.png","2025 Admissions & Welcome Center MEP set"]
+];
+siteBtns.innerHTML=siteViews.map((x,i)=>`<button class="${i?"":"on"}" data-i="${i}">${x[0]}</button>`).join("");
+function showSite(i){const x=siteViews[i];siteImg.src="Mercy supporting documents/plan_refs/"+x[1];siteTitle.textContent=x[0];siteSource.textContent=x[2];siteBtns.querySelectorAll("button").forEach((b,j)=>b.classList.toggle("on",i===j))}
+siteBtns.querySelectorAll("button").forEach(b=>b.onclick=()=>showSite(+b.dataset.i));
+siteContext.textContent=A.site.context||"";buildings.innerHTML=(A.site.buildings||[]).map(x=>`<span class="chip">${esc(x)}</span>`).join("");edges.innerHTML=(A.site.edges||[]).map(x=>`<span class="chip">${esc(x)}</span>`).join("");siteNotes.innerHTML=(A.site.notes||[]).map(x=>`<li>${esc(x)}</li>`).join("");siteSources.innerHTML=(A.site.sources||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+showFloor();renderRooms();showSite(0);
+activate((location.hash||"#site").slice(1));
+window.addEventListener("hashchange",()=>activate((location.hash||"#site").slice(1)));
+</script>
+</body>
+</html>
