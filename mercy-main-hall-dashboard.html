@@ -18,7 +18,7 @@ a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
 .toolbar{display:flex;align-items:end;gap:14px;padding:14px 16px;margin-bottom:16px;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field label,.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.065em;color:var(--muted);font-weight:750}
 select,input{border:1px solid #cbd4dd;border-radius:7px;padding:8px 10px;background:#fff;color:var(--text)}input{min-width:220px}
 .source{margin-left:auto;color:var(--muted);font-size:12px;max-width:390px}.source b{color:var(--text)}
-.stats{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:12px;margin:0 0 16px}.stat{padding:15px 16px}.stat .n{font-size:25px;font-weight:750;color:var(--navy)}.stat .l{font-size:12px;color:var(--muted);margin-top:2px}
+.stats{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px;margin:0 0 16px}.stat{padding:13px 14px;min-width:0}.stat .n{font-size:22px;font-weight:750;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat .l{font-size:11.5px;color:var(--muted);margin-top:2px}
 .grid-plan{display:grid;grid-template-columns:minmax(650px,1fr) 310px;gap:16px}.card{overflow:hidden}.card-hd{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.card-hd h2,.card-hd h3{margin:0;font-size:15px}.card-hd .right{margin-left:auto;color:var(--muted);font-size:12px}
 .plan-stage{height:620px;background:#eef2f5;position:relative;overflow:hidden;touch-action:none}.plan-stage canvas{width:100%;height:100%;display:block;cursor:crosshair}.plan-stage.grabbing canvas{cursor:grabbing}
 .plan-tools{position:absolute;top:10px;left:10px;display:flex;gap:6px;z-index:3}.plan-tools button{border:1px solid #cbd4dd;background:#fffffff2;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:12px;box-shadow:0 1px 4px #17212b1a}.plan-tools button:hover{background:#fff;border-color:var(--blue);color:var(--blue)}
@@ -45,19 +45,23 @@ select,input{border:1px solid #cbd4dd;border-radius:7px;padding:8px 10px;backgro
 .stack-msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);background:#fff}.stack-msg.hidden{display:none}
 .plate{position:absolute;left:50%;transform-style:preserve-3d;cursor:pointer}
 .plate-inner{position:relative;transform-style:preserve-3d}
-.plate-inner>canvas{display:block;background:#fff;filter:drop-shadow(0 14px 18px rgba(20,53,92,.2))}
+.plate-inner>canvas{display:block;background:transparent}
 .plate.dim .plate-inner>canvas{opacity:.5}
 .plate.faded{opacity:.3}
-.plate:hover .plate-inner>canvas,.plate.sel .plate-inner>canvas{filter:drop-shadow(0 14px 18px rgba(20,53,92,.24)) drop-shadow(0 0 3px var(--blue))}
+.plate:hover .plate-inner>canvas,.plate.sel .plate-inner>canvas{filter:drop-shadow(0 0 2px var(--blue))}
 .pin{position:absolute;transform-style:preserve-3d;pointer-events:none}
 .pin-i{position:absolute;left:-110px;bottom:0;width:220px;display:flex;flex-direction:column;align-items:center;transform-origin:50% 100%}
 .pin-box{border:1.5px solid var(--navy);background:#fff;border-radius:4px;padding:2px 7px;font:650 11px/1.25 "Segoe UI",Arial;color:var(--navy);white-space:nowrap;box-shadow:0 2px 6px #14355c22}
 .pin-stem{width:1.5px;height:18px;background:var(--navy)}.pin-dot{width:6px;height:6px;border-radius:50%;background:var(--navy);margin-top:-2px}
 .stack-rail{position:absolute;inset:0;pointer-events:none}
 .rail-line{position:absolute;border-left:1px dashed #b3c2d2}
-.flabel{position:absolute;transform:translateY(-50%);font-weight:750;color:var(--navy);white-space:nowrap;font-size:14px;pointer-events:auto}.flabel.off{color:#a9b6c4;font-weight:600}.flabel.sel{color:var(--blue)}.flabel small{display:block;font-weight:500;font-size:11px;color:var(--muted)}
+.flabel{position:absolute;transform:translateY(-50%);font-weight:750;color:var(--navy);white-space:normal;max-width:210px;font-size:14px;pointer-events:auto}.flabel.off{color:#a9b6c4;font-weight:600}.flabel.sel{color:var(--blue)}.flabel small{display:block;font-weight:500;font-size:11px;color:var(--muted);line-height:1.35;margin-top:2px}
 .flabel .flink{display:inline-block;margin-top:3px;font-size:11px;font-weight:600}
 .plate-card{padding:15px 16px}.plate-card .chips .chip{display:flex;gap:6px;align-items:center}.plate-card .chip i{width:11px;height:11px;border-radius:3px;border:1px solid #0002;flex:none}.plate-card .chip small{color:var(--muted)}
+.series-key{display:flex;flex-wrap:wrap;gap:8px 16px;margin:0 0 14px;padding:11px 14px;background:#f5f8fb;border:1px solid var(--line);border-radius:10px}
+.series-key.hidden{display:none}.series-key .sk{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--navy)}
+.series-key .sk i{width:13px;height:13px;border-radius:3px;border:1px solid #0002;flex:none}.series-key .sk small{font-weight:500;color:var(--muted)}
+.series-key .sk-hd{font-size:11px;text-transform:uppercase;letter-spacing:.065em;font-weight:750;color:var(--muted);align-self:center}
 .plate-card h4{margin:16px 0 7px;font-size:13.5px;font-weight:750;letter-spacing:.02em;color:var(--navy)}.plate-card h4.na{color:#8a6a2a}
 .plate-card .btnrow{margin-top:16px;display:flex;gap:8px}.plate-card .btnrow button{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:650}.plate-card .btnrow button.ghost{background:#fff;color:var(--navy)}
 .analysis-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.chart{padding:16px}.barrow{display:grid;grid-template-columns:minmax(150px,1fr) 2fr 78px;gap:10px;align-items:center;margin:9px 0}.barrow .nm{font-size:12px}.track{height:12px;background:#edf1f4;border-radius:6px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:6px}.barrow .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -81,8 +85,8 @@ select,input{border:1px solid #cbd4dd;border-radius:7px;padding:8px 10px;backgro
 .lock-err{min-height:18px;margin:4px 0 0;font-size:12px;color:var(--bad)}
 body.locked{overflow:hidden}
 body.locked .shell{visibility:hidden;pointer-events:none}
-@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.grid-plan,.site-grid,.analysis-grid{grid-template-columns:1fr}.plan-stage,.site-stage{height:520px}.mep-grid{grid-template-columns:1fr}}
-@media(max-width:650px){.shell{padding:0 12px 40px}.hero{margin:0 -12px 18px;padding:17px 12px 0}.stats{grid-template-columns:1fr 1fr}.grid-plan{display:block}.grid-plan>.card{margin-bottom:12px}.plan-stage{height:420px}.barrow{grid-template-columns:1fr 1.2fr 65px}}
+@media(max-width:1050px){.stats{grid-auto-flow:row;grid-template-columns:repeat(2,1fr)}.grid-plan,.site-grid,.analysis-grid{grid-template-columns:1fr}.plan-stage,.site-stage{height:520px}.mep-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.shell{padding:0 12px 40px}.hero{margin:0 -12px 18px;padding:17px 12px 0}.stats{grid-auto-flow:row;grid-template-columns:1fr 1fr}.grid-plan{display:block}.grid-plan>.card{margin-bottom:12px}.plan-stage{height:420px}.barrow{grid-template-columns:1fr 1.2fr 65px}}
 </style>
 </head>
 <body class="locked">
@@ -114,6 +118,12 @@ body.locked .shell{visibility:hidden;pointer-events:none}
     <div class="toolbar">
       <div class="field"><label>Building</label><select><option>Main Hall (MH)</option></select></div>
       <div class="field"><label>Zone plan floor</label><select id="floorSel"></select></div>
+      <div class="field"><label>Color by</label>
+        <select id="planColor">
+          <option value="program">Mercy zone-plan colors (2021 legend)</option>
+          <option value="series">FICM series (100 / 200 / 600…)</option>
+        </select>
+      </div>
       <div class="source"><b>Zone plan:</b> <a href="../2021 10 26 Final Main Hall Updated Floorplan Zones.pdf">2021 Noelker and Hull zones</a><br><b>Current reference:</b> <a href="../Main Hall_2023 update.pdf">2023 Main Hall update</a> · <b>Inventory:</b> April 2025 report</div>
     </div>
     <div class="stats" id="planStats"></div>
@@ -141,6 +151,18 @@ body.locked .shell{visibility:hidden;pointer-events:none}
   <main id="stack" class="view">
     <div class="toolbar">
       <div class="field"><label>Highlight program</label><select id="stackZone"></select></div>
+      <div class="field"><label>Color by</label>
+        <select id="stackColor">
+          <option value="program">Mercy zone-plan colors (2021 legend)</option>
+          <option value="series">FICM series (100 / 200 / 600…)</option>
+        </select>
+      </div>
+      <div class="field"><label>Room list</label>
+        <select id="stackRooms">
+          <option value="show">Show rooms by floor</option>
+          <option value="hide">Hide room list</option>
+        </select>
+      </div>
       <div class="stack-ctl">
         <div class="field"><label>Tilt</label><input type="range" id="ctlTilt" min="25" max="75" value="58"></div>
         <div class="field"><label>Rotate</label><input type="range" id="ctlRot" min="-60" max="0" value="-36"></div>
@@ -149,13 +171,14 @@ body.locked .shell{visibility:hidden;pointer-events:none}
       <div class="source"><b>Plates:</b> <a href="../2021 10 26 Final Main Hall Updated Floorplan Zones.pdf">2021 Noelker and Hull zone plans</a><br>Callout areas are prorated from each legend total by painted area.</div>
     </div>
     <div class="stats" id="stackStats"></div>
+    <div class="series-key hidden" id="stackSeriesKey"></div>
     <section class="card">
       <div class="card-hd"><h2 id="stackTitle">Main Hall — exploded stack</h2><span class="right">Click a floor plate to inspect it here</span></div>
       <div class="stack-stage" id="stackStage"><div class="stack-scene" id="stackScene"></div><div class="stack-rail" id="stackRail"></div><div class="stack-msg" id="stackMsg">Rendering floor plates…</div></div>
     </section>
     <section class="card hidden" id="plateCard" style="margin-top:16px"></section>
-    <div class="section-title"><div><h2 id="stackTblTitle">Program by floor</h2><p>Where the highlighted program sits, and which inventoried rooms match it</p></div></div>
-    <section class="card table-wrap"><table><thead><tr><th>Floor</th><th class="num">Program SF</th><th class="num">Share of floor</th><th class="num">Separate areas</th><th>Matching instructional rooms</th></tr></thead><tbody id="stackRows"></tbody></table></section>
+    <div class="section-title"><div><h2 id="stackTblTitle">Floors and rooms</h2><p id="stackTblNote">Programs painted in the 2021 zone-plan legend colors · instructional rooms by floor</p></div></div>
+    <section class="card table-wrap"><table><thead id="stackHead"><tr><th>Floor</th><th class="num">Zoned SF</th><th class="num">Assignable</th><th class="num">Programs</th><th>Instructional rooms</th></tr></thead><tbody id="stackRows"></tbody></table></section>
   </main>
 
   <main id="analysis" class="view">
@@ -235,6 +258,22 @@ const sortByFicm=(a,b)=>{
   return sb-sa;
 };
 const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+/* One stable color per FICM series for stack “color by series” mode. */
+const SERIES_COLOR={
+  "100":"#3B7DD8","200":"#E07A2F","300":"#2A9D8F","400":"#C9A227","500":"#D64045",
+  "600":"#5C8A3C","700":"#8B6914","800":"#C45C8A","900":"#5B6B7A","000":"#9AA3AB",
+  "WWW":"#6E7C8C","XXX":"#A89060","YYY":"#7A8B9A"
+};
+const colorOf=(z,bySeries)=>{
+  if(!z)return "#888888";
+  if(bySeries){const c=ficmOf(z.name).code;return SERIES_COLOR[c]||"#888888"}
+  return z.color;
+};
+/* Wording for the two color modes, used by both the Plan View and Building Stack pickers. */
+const COLOR_MODE={
+  program:{short:"Mercy zone-plan colors"},
+  series:{short:"FICM series colors"}
+};
 const HIT=38, HIT2=HIT*HIT;
 /* Plates come from plan_images.js as data URLs so the canvas stays readable on file:// pages. */
 const plateSrc=f=>(window.MERCY_PLAN_IMAGES||{})[f.img]||("Mercy supporting documents/"+f.img);
@@ -263,7 +302,7 @@ function zoneForRoom(r){const f=floors.find(x=>x.id===r.floor);if(!f)return null
 const floorSel=document.getElementById("floorSel"), planStage=document.getElementById("planStage"),
       planCanvas=document.getElementById("planCanvas"), pctx=planCanvas.getContext("2d"),
       sampleCanvas=document.createElement("canvas"), sampleCtx=sampleCanvas.getContext("2d",{willReadFrequently:true}),
-      baseImg=new Image(), maskCache=new Map(), view={scale:1,x:0,y:0};
+      baseImg=new Image(), maskCache=new Map(), planColorCache=new Map(), view={scale:1,x:0,y:0};
 let currentFloor=null, selectedZone=null, imgReady=false, canRead=true, needFit=true;
 
 floorSel.innerHTML=floors.map(f=>`<option value="${esc(f.id)}">${esc(f.label)}</option>`).join("");
@@ -281,20 +320,28 @@ function showFloor(){
       const sum=f.zones.filter(x=>ficmOf(x.name).code===fc.code).reduce((s,x)=>s+x.sf,0);
       html+=`<div class="leg-grp${fc.assignable?"":" na"}"><span class="code">${esc(fc.series)}</span><span class="ttl">${esc(fc.label)}</span><span class="sum">${fmt(sum)} SF</span></div>`;
     }
-    html+=`<div class="leg" data-i="${i}"><i class="sw" style="background:${z.color}"></i><b>${esc(z.name)}<span class="serie">${esc(fc.series)}</span></b><span>${fmt(z.sf)} SF</span></div>`;
+    html+=`<div class="leg" data-i="${i}"><i class="sw" style="background:${colorOf(z,planColor.value==="series")}"></i><b>${esc(z.name)}<span class="serie">${esc(fc.series)}</span></b><span>${fmt(z.sf)} SF</span></div>`;
   });
-  legend.innerHTML=html+`<div class="ficm-note">Grouped by FICM series · nonassignable categories last</div>`;
+  legend.innerHTML=html+`<div class="ficm-note">Swatches show ${esc(COLOR_MODE[planColor.value].short)} · grouped by FICM series, nonassignable categories last</div>`;
   legend.querySelectorAll(".leg").forEach(el=>el.onclick=()=>selectZone(f.zones[+el.dataset.i]));
   const inv=rooms.filter(r=>r.floor===f.id), invASF=inv.reduce((s,r)=>s+r.asf,0);
+  const assignSF=f.zones.reduce((s,z)=>s+(ficmOf(z.name).assignable?z.sf:0),0);
+  const nonassignSF=f.zones.reduce((s,z)=>s+(ficmOf(z.name).assignable?0:z.sf),0);
+  const efficiency=f.sf?100*assignSF/f.sf:null;
   planStats.innerHTML=stats([
-    [fmt(f.sf),"Zone-plan SF"],[fmt(f.zones.length),"Program types"],[fmt(inv.length),"Instructional rooms"],
-    [fmt(invASF),"Instructional ASF"],[fmt(inv.reduce((s,r)=>s+r.seats,0)),"Instructional seats"]
+    [fmt(f.sf),"Zone-plan SF"],
+    [fmt(assignSF),"Assignable SF"],
+    [fmt(nonassignSF),"Nonassignable SF"],
+    [efficiency==null?"—":efficiency.toFixed(1)+"%","Efficiency"],
+    [fmt(f.zones.length),"Program types"],[fmt(inv.length),"Instructional rooms"],
+    [fmt(inv.reduce((s,r)=>s+r.seats,0)),"Instructional seats"],[fmt(invASF),"Instructional ASF"]
   ]);
   const next=plateSrc(f);
   if(baseImg.getAttribute("src")===next&&baseImg.complete&&baseImg.naturalWidth)onImgReady();
   else baseImg.src=next;
 }
 floorSel.onchange=showFloor;
+planColor.onchange=showFloor;
 let pendingReady=null;
 function whenReady(cb){imgReady?cb():pendingReady=cb}
 function onImgReady(){
@@ -319,15 +366,33 @@ function fitView(){
   needFit=false; draw();
 }
 function maskFor(zone){
-  if(maskCache.has(zone.color))return maskCache.get(zone.color);
-  const w=sampleCanvas.width,h=sampleCanvas.height,[tr,tg,tb]=rgb(zone.color);
+  const bySeries=planColor.value==="series", key=zone.color+"|"+(bySeries?"series":"program");
+  if(maskCache.has(key))return maskCache.get(key);
+  const w=sampleCanvas.width,h=sampleCanvas.height,[mr,mg,mb]=rgb(zone.color),[tr,tg,tb]=rgb(colorOf(zone,bySeries));
   const src=sampleCtx.getImageData(0,0,w,h).data, out=sampleCtx.createImageData(w,h), d=out.data;
   for(let i=0;i<src.length;i+=4){
-    const dr=src[i]-tr,dg=src[i+1]-tg,db=src[i+2]-tb;
-    if(dr*dr+dg*dg+db*db<=HIT2){d[i]=src[i];d[i+1]=src[i+1];d[i+2]=src[i+2];d[i+3]=255}
+    const dr=src[i]-mr,dg=src[i+1]-mg,db=src[i+2]-mb;
+    if(dr*dr+dg*dg+db*db<=HIT2){d[i]=tr;d[i+1]=tg;d[i+2]=tb;d[i+3]=255}
   }
   const cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(out,0,0);
-  maskCache.set(zone.color,cv);return cv;
+  maskCache.set(key,cv);return cv;
+}
+function seriesPlan(){
+  if(!currentFloor||!imgReady)return baseImg;
+  const key=currentFloor.id+"|series";
+  if(planColorCache.has(key))return planColorCache.get(key);
+  const w=sampleCanvas.width,h=sampleCanvas.height, src=sampleCtx.getImageData(0,0,w,h), d=src.data;
+  const zs=currentFloor.zones.map(z=>({match:rgb(z.color),paint:rgb(colorOf(z,true))}));
+  for(let i=0;i<d.length;i+=4){
+    let best=null,bd=HIT2+1;
+    for(const z of zs){
+      const dr=d[i]-z.match[0],dg=d[i+1]-z.match[1],db=d[i+2]-z.match[2],dist=dr*dr+dg*dg+db*db;
+      if(dist<bd){bd=dist;best=z}
+    }
+    if(best&&bd<=HIT2){d[i]=best.paint[0];d[i+1]=best.paint[1];d[i+2]=best.paint[2]}
+  }
+  const cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(src,0,0);
+  planColorCache.set(key,cv);return cv;
 }
 function draw(){
   const dpr=window.devicePixelRatio||1;
@@ -336,7 +401,7 @@ function draw(){
   if(!imgReady)return;
   pctx.setTransform(dpr*view.scale,0,0,dpr*view.scale,dpr*view.x,dpr*view.y);
   pctx.fillStyle="#fff"; pctx.fillRect(0,0,baseImg.naturalWidth,baseImg.naturalHeight);
-  pctx.drawImage(baseImg,0,0);
+  pctx.drawImage(planColor.value==="series"?seriesPlan():baseImg,0,0);
   if(selectedZone&&canRead){
     pctx.globalAlpha=.87; pctx.fillStyle="#fff"; pctx.fillRect(0,0,baseImg.naturalWidth,baseImg.naturalHeight);
     pctx.globalAlpha=1; pctx.drawImage(maskFor(selectedZone),0,0);
@@ -361,7 +426,7 @@ function renderZoneDetail(){
   if(!z){zoneDetail.classList.add("hidden");zoneDetail.innerHTML="";return}
   const share=currentFloor.sf?100*z.sf/currentFloor.sf:null, cand=roomsForZone(z,currentFloor.id), fc=ficmOf(z.name);
   zoneDetail.classList.remove("hidden");
-  zoneDetail.innerHTML=`<div class="zt"><i style="background:${z.color}"></i><span>${esc(z.name)}</span></div>
+  zoneDetail.innerHTML=`<div class="zt"><i style="background:${colorOf(z,planColor.value==="series")}"></i><span>${esc(z.name)}</span></div>
     <dl><dt>Zone area</dt><dd>${fmt(z.sf)} SF</dd>
         <dt>Share of floor</dt><dd>${share==null?"—":share.toFixed(1)+"%"}</dd>
         <dt>FICM series</dt><dd>${esc(fc.series)} · ${esc(fc.label)}</dd>
@@ -458,7 +523,7 @@ const zoneOn=(f,name)=>f.zones.find(z=>z.name===name)||null;
 const zoneSF=name=>floors.reduce((s,f)=>{const z=zoneOn(f,name);return s+(z?z.sf:0)},0);
 const zoneNames=[...new Set(floors.flatMap(f=>f.zones.map(z=>z.name)))].sort(sortByFicm);
 (function fillStackZones(){
-  let html=`<option value="">No highlight — plates only</option>`, last="";
+  let html=`<option value="*ALL*">All programs</option><option value="">Linework only — no fills</option>`, last="";
   zoneNames.forEach(n=>{
     const fc=ficmOf(n);
     if(fc.code!==last){
@@ -470,7 +535,7 @@ const zoneNames=[...new Set(floors.flatMap(f=>f.zones.map(z=>z.name)))].sort(sor
   });
   if(last)html+=`</optgroup>`;
   stackZone.innerHTML=html;
-  if(zoneNames.includes("GENERAL CLASSROOMS"))stackZone.value="GENERAL CLASSROOMS";
+  stackZone.value="*ALL*";
 })();
 
 /* Reduce a zone plan to the reference's white-sheet-with-navy-lines look. A pixel is drawn as
@@ -488,24 +553,46 @@ function lineArt(raw){
     for(let x=0;x<w;x++){
       const p=y*w+x,i=p*4;
       const line=dark[p]&&(x<R||!dark[p-R]||x>=w-R||!dark[p+R]||y<R||!dark[p-R*w]||y>=h-R||!dark[p+R*w]);
-      d[i]=line?34:255; d[i+1]=line?68:255; d[i+2]=line?108:255; d[i+3]=255;
+      d[i]=34; d[i+1]=68; d[i+2]=108; d[i+3]=line?255:0;
     }
   }
   const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);return c;
 }
-function hlFor(fid,name){
-  const k=fid+"|"+name; if(hlCache.has(k))return hlCache.get(k);
+function hlFor(fid,name,bySeries){
+  /* Match pixels by the plan’s program swatch; paint in program or series color. */
+  const tag=bySeries?"series":"program";
+  const k=fid+"|"+name+"|"+tag; if(hlCache.has(k))return hlCache.get(k);
   const f=floors.find(x=>x.id===fid), z=f?zoneOn(f,name):null, pd=plate.get(fid);
   let cv=null;
   if(z&&pd){
-    const w=pd.w,h=pd.h,src=pd.raw.data,out=new ImageData(w,h),d=out.data,[tr,tg,tb]=rgb(z.color);
+    const w=pd.w,h=pd.h,src=pd.raw.data,out=new ImageData(w,h),d=out.data;
+    const [mr,mg,mb]=rgb(z.color), [tr,tg,tb]=rgb(colorOf(z,bySeries));
     let hit=0;
     for(let i=0;i<src.length;i+=4){
-      const dr=src[i]-tr,dg=src[i+1]-tg,db=src[i+2]-tb;
-      if(dr*dr+dg*dg+db*db<=HIT2){d[i]=124;d[i+1]=201;d[i+2]=155;d[i+3]=232;hit++}
+      const dr=src[i]-mr,dg=src[i+1]-mg,db=src[i+2]-mb;
+      if(dr*dr+dg*dg+db*db<=HIT2){d[i]=tr;d[i+1]=tg;d[i+2]=tb;d[i+3]=210;hit++}
     }
     if(hit){cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(out,0,0)}
   }
+  hlCache.set(k,cv);return cv;
+}
+function hlAll(fid,bySeries){
+  /* Every program on the plate — 2021 zone-plan legend colors, or one color per FICM series. */
+  const tag=bySeries?"series":"program";
+  const k=fid+"|*ALL*|"+tag; if(hlCache.has(k))return hlCache.get(k);
+  const f=floors.find(x=>x.id===fid), pd=plate.get(fid);
+  if(!f||!pd){hlCache.set(k,null);return null}
+  const w=pd.w,h=pd.h,src=pd.raw.data,out=new ImageData(w,h),d=out.data;
+  const zs=f.zones.map(z=>({match:rgb(z.color),paint:rgb(colorOf(z,bySeries))}));
+  for(let i=0;i<src.length;i+=4){
+    let best=null,bd=HIT2+1;
+    for(const z of zs){
+      const dr=src[i]-z.match[0],dg=src[i+1]-z.match[1],db=src[i+2]-z.match[2],dist=dr*dr+dg*dg+db*db;
+      if(dist<bd){bd=dist;best=z}
+    }
+    if(best&&bd<=HIT2){d[i]=best.paint[0];d[i+1]=best.paint[1];d[i+2]=best.paint[2];d[i+3]=200}
+  }
+  const cv=document.createElement("canvas");cv.width=w;cv.height=h;cv.getContext("2d").putImageData(out,0,0);
   hlCache.set(k,cv);return cv;
 }
 /* Connected painted regions of one program on one plate, sampled every few pixels. */
@@ -553,7 +640,9 @@ async function buildStack(){
 }
 function renderStack(){
   if(!stackLoaded)return;
-  const name=stackZone.value, tilt=+ctlTilt.value, rot=+ctlRot.value, spread=+ctlGap.value/100;
+  const mode=stackZone.value, all=mode==="*ALL*", name=(!all&&mode)?mode:"", showRooms=stackRooms.value!=="hide";
+  const bySeries=stackColor.value==="series";
+  const tilt=+ctlTilt.value, rot=+ctlRot.value, spread=+ctlGap.value/100;
   const sr=Math.abs(Math.sin(rot*D2R)), cr=Math.abs(Math.cos(rot*D2R)), ct=Math.cos(tilt*D2R);
   const stageW=stackStage.clientWidth||1000, n=stackFloors.length;
   const maxW=Math.max(...stackFloors.map(f=>plate.get(f.id).w)), maxH=Math.max(...stackFloors.map(f=>plate.get(f.id).h));
@@ -570,6 +659,17 @@ function renderStack(){
   stackStage.style.height=Math.round(stageH)+"px";
   const inv=`rotateZ(${-rot}deg) rotateX(${-tilt}deg)`;
   stackScene.innerHTML="";
+  /* Series key: only when coloring by series and fills are on. */
+  const usedCodes=new Set(floors.flatMap(f=>f.zones.map(z=>ficmOf(z.name).code)));
+  if(bySeries&&(all||name)){
+    stackSeriesKey.classList.remove("hidden");
+    stackSeriesKey.innerHTML=`<span class="sk-hd">FICM series key</span>`+ficmSeries.filter(s=>usedCodes.has(s.code)).map(s=>{
+      const col=SERIES_COLOR[s.code]||"#888";
+      return `<span class="sk"><i style="background:${col}"></i>${esc(s.series)} <small>${esc(s.label)}</small></span>`;
+    }).join("");
+  }else{
+    stackSeriesKey.classList.add("hidden");stackSeriesKey.innerHTML="";
+  }
   stackFloors.forEach((f,i)=>{
     const pd=plate.get(f.id), z=name?zoneOn(f,name):null, w=pd.w*unit, h=pd.h*unit;
     const el=document.createElement("div");
@@ -583,15 +683,18 @@ function renderStack(){
     inner.style.transform=`translate(-50%,-50%) rotateX(${tilt}deg) rotateZ(${rot}deg)`;
     const cv=document.createElement("canvas");cv.width=pd.w;cv.height=pd.h;
     cv.style.width=w+"px";cv.style.height=h+"px";
-    const cx=cv.getContext("2d");cx.drawImage(pd.art,0,0);
-    const hl=name?hlFor(f.id,name):null; if(hl)cx.drawImage(hl,0,0);
+    const cx=cv.getContext("2d");
+    // Fills first so the linework stays crisp on top of them.
+    const hl=all?hlAll(f.id,bySeries):(name?hlFor(f.id,name,bySeries):null); if(hl)cx.drawImage(hl,0,0);
+    cx.drawImage(pd.art,0,0);
     inner.appendChild(cv);
     if(z){
+      const pinCol=colorOf(z,bySeries);
       const bl=blobsFor(f.id,name), tot=bl.reduce((s,b)=>s+b.n,0)||1;
       bl.filter(b=>b.n/tot>=.07).slice(0,5).forEach(b=>{
         const pin=document.createElement("div");pin.className="pin";
         pin.style.left=(100*b.x/pd.w)+"%";pin.style.top=(100*b.y/pd.h)+"%";
-        pin.innerHTML=`<div class="pin-i" style="transform:${inv}"><div class="pin-box">${fmt(Math.round(z.sf*b.n/tot))} SF</div><div class="pin-stem"></div><div class="pin-dot"></div></div>`;
+        pin.innerHTML=`<div class="pin-i" style="transform:${inv}"><div class="pin-box" style="border-color:${pinCol}">${fmt(Math.round(z.sf*b.n/tot))} SF</div><div class="pin-stem" style="background:${pinCol}"></div><div class="pin-dot" style="background:${pinCol}"></div></div>`;
         inner.appendChild(pin);
       });
     }
@@ -604,26 +707,52 @@ function renderStack(){
     `<div class="rail-line" style="left:${railX-16}px;top:12px;bottom:12px"></div>`+
     stackFloors.map((f,i)=>{
       const z=name?zoneOn(f,name):null;
-      return `<div class="flabel${name&&!z?" off":""}${selectedPlate===f.id?" sel":""}" style="left:${railX}px;top:${top0+i*gap}px">${esc(f.label)}<small>${fmt(f.sf)} SF${z?" · "+fmt(z.sf)+" SF here":""}</small><a href="#" class="flink" data-openfloor="${esc(f.id)}">Open plan →</a></div>`;
+      const inv=rooms.filter(r=>r.floor===f.id);
+      const roomBit=showRooms&&(all||!name)?`<small>${inv.length?inv.map(r=>`<a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a>`).join(" · "):"No inventoried rooms"}</small>`:"";
+      return `<div class="flabel${name&&!z?" off":""}${selectedPlate===f.id?" sel":""}" style="left:${railX}px;top:${top0+i*gap}px">${esc(f.label)}<small>${fmt(f.sf)} SF${z?" · "+fmt(z.sf)+" SF here":all?" · "+f.zones.length+" programs":""}</small>${roomBit}<a href="#" class="flink" data-openfloor="${esc(f.id)}">Open plan →</a></div>`;
     }).join("");
-  renderPlateCard();
-  stackTitle.textContent=name?`Main Hall — ${name.toLowerCase()} through the building`:"Main Hall — exploded stack";
-  const on=stackFloors.filter(f=>zoneOn(f,name));
-  const cands=name?stackFloors.flatMap(f=>{const z=zoneOn(f,name);return z?roomsForZone(z,f.id):[]}):[];
+  renderPlateCard(bySeries);
+  const colorLabel=COLOR_MODE[stackColor.value].short;
+  stackTitle.textContent=all?`Main Hall — all programs (${colorLabel})`:name?`Main Hall — ${name.toLowerCase()} through the building`:"Main Hall — exploded stack";
+  const on=name?stackFloors.filter(f=>zoneOn(f,name)):[];
+  const cands=name?stackFloors.flatMap(f=>{const z=zoneOn(f,name);return z?roomsForZone(z,f.id):[]}):rooms;
+  const totalZ=stackFloors.reduce((s,f)=>s+f.sf,0);
+  const totalA=stackFloors.reduce((s,f)=>s+f.zones.reduce((a,z)=>a+(ficmOf(z.name).assignable?z.sf:0),0),0);
   stackStats.innerHTML=name
     ? stats([[fmt(zoneSF(name)),"Program SF"],[`${on.length} of ${stackFloors.length}`,"Floors with this program"],
         [fmt(100*zoneSF(name)/(Object.values(window.MERCY_ZONE_SF||{}).reduce((a,b)=>a+b,0)||1))+"%","Share of zoned SF"],
         [fmt(cands.length),"Matching inventory rooms"],[fmt(cands.reduce((s,r)=>s+r.seats,0)),"Seats in those rooms"]])
-    : stats([[fmt(stackFloors.length),"Floor plates"],[fmt(stackFloors.reduce((s,f)=>s+f.sf,0)),"Zoned SF"],
-        [fmt(zoneNames.length),"Distinct programs"],[fmt(rooms.length),"Instructional rooms"],[fmt(rooms.reduce((s,r)=>s+r.seats,0)),"Seats"]]);
-  stackTblTitle.textContent=name?`${name} by floor`:"Floor plates";
-  stackRows.innerHTML=stackFloors.map(f=>{
-    const z=name?zoneOn(f,name):null, bl=z?blobsFor(f.id,name):[], tot=bl.reduce((s,b)=>s+b.n,0)||1;
-    const cand=z?roomsForZone(z,f.id):[];
-    return `<tr><td><b>${esc(f.label)}</b></td><td class="num">${z?fmt(z.sf):"—"}</td><td class="num">${z&&f.sf?(100*z.sf/f.sf).toFixed(1)+"%":"—"}</td><td class="num">${z?bl.filter(b=>b.n/tot>=.02).length:"—"}</td><td>${cand.length?cand.map(r=>`<a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a>`).join(", "):`<span class="cite">${z?"No inventory room matches this program":"Program not on this floor"}</span>`}</td></tr>`;
-  }).join("");
+    : stats([[fmt(stackFloors.length),"Floor plates"],[fmt(totalZ),"Zoned SF"],[fmt(totalA),"Assignable SF"],
+        [fmt(rooms.length),"Instructional rooms"],[fmt(rooms.reduce((s,r)=>s+r.seats,0)),"Seats"]]);
+  if(name){
+    const fc=ficmOf(name);
+    stackTblTitle.textContent=`${name} by floor`;
+    stackTblNote.textContent=bySeries
+      ?`Painted as ${fc.series} · ${fc.label}${fc.assignable?"":" (nonassignable)"}`
+      :"Where this program sits, painted in its 2021 zone-plan legend color";
+    stackHead.innerHTML=`<tr><th>Floor</th><th class="num">Program SF</th><th class="num">Share of floor</th><th class="num">Separate areas</th><th>Matching instructional rooms</th></tr>`;
+    stackRows.innerHTML=stackFloors.map(f=>{
+      const z=zoneOn(f,name), bl=z?blobsFor(f.id,name):[], tot=bl.reduce((s,b)=>s+b.n,0)||1;
+      const cand=z?roomsForZone(z,f.id):[];
+      return `<tr><td><b>${esc(f.label)}</b></td><td class="num">${z?fmt(z.sf):"—"}</td><td class="num">${z&&f.sf?(100*z.sf/f.sf).toFixed(1)+"%":"—"}</td><td class="num">${z?bl.filter(b=>b.n/tot>=.02).length:"—"}</td><td>${cand.length?cand.map(r=>`<a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a>`).join(", "):`<span class="cite">${z?"No inventory room matches this program":"Program not on this floor"}</span>`}</td></tr>`;
+    }).join("");
+  }else{
+    stackTblTitle.textContent=all?"All programs and rooms by floor":"Floor plates";
+    stackTblNote.textContent=all
+      ?(bySeries?"One color per FICM series · every program in a series shares one fill":"One color per program, taken from the 2021 Mercy zone-plan legend")
+      :(showRooms?"Every inventoried instructional room on each floor":"Turn on “Show rooms by floor” to list instructional rooms here and on the stack labels");
+    stackHead.innerHTML=`<tr><th>Floor</th><th class="num">Zoned SF</th><th class="num">Assignable</th><th class="num">Programs</th><th>Instructional rooms</th></tr>`;
+    stackRows.innerHTML=stackFloors.map(f=>{
+      const assign=f.zones.reduce((s,z)=>s+(ficmOf(z.name).assignable?z.sf:0),0);
+      const inv=rooms.filter(r=>r.floor===f.id);
+      const roomCell=!showRooms?`<span class="cite">${inv.length} rooms · list hidden</span>`:
+        (inv.length?inv.map(r=>`<a href="#" data-roomlink="${esc(r.room)}">${esc(r.room)}</a>`).join(", "):`<span class="cite">None in the April 2025 inventory</span>`);
+      return `<tr><td><b>${esc(f.label)}</b></td><td class="num">${fmt(f.sf)}</td><td class="num">${fmt(assign)}</td><td class="num">${f.zones.length}</td><td>${roomCell}</td></tr>`;
+    }).join("");
+  }
 }
-function renderPlateCard(){
+function renderPlateCard(bySeries){
+  bySeries=bySeries??(stackColor.value==="series");
   const f=stackFloors.find(x=>x.id===selectedPlate);
   if(!f){plateCard.classList.add("hidden");plateCard.innerHTML="";return}
   const inv=rooms.filter(r=>r.floor===f.id);
@@ -636,7 +765,7 @@ function renderPlateCard(){
       const sum=f.zones.filter(x=>ficmOf(x.name).code===fc.code).reduce((s,x)=>s+x.sf,0);
       body+=`</div><h4${fc.assignable?"":' class="na"'}>${esc(fc.series)} · ${esc(fc.label)}${fc.assignable?"":" · nonassignable"} — ${fmt(sum)} SF</h4><div class="chips">`;
     }
-    body+=`<span class="chip"><i style="background:${z.color}"></i>${esc(z.name)} <small>${fmt(z.sf)} SF</small></span>`;
+    body+=`<span class="chip"><i style="background:${colorOf(z,bySeries)}"></i>${esc(z.name)} <small>${fmt(z.sf)} SF</small></span>`;
   });
   plateCard.classList.remove("hidden");
   plateCard.innerHTML=`<div class="card-hd"><h2>${esc(f.label)}</h2><span class="right">${f.zones.length} program zones · ${fmt(f.sf)} zoned SF</span></div>
@@ -654,6 +783,8 @@ function renderPlateCard(){
   document.getElementById("plateClear").onclick=()=>{selectedPlate=null;renderStack()};
 }
 stackZone.onchange=renderStack;
+stackColor.onchange=renderStack;
+stackRooms.onchange=renderStack;
 ctlTilt.oninput=ctlRot.oninput=ctlGap.oninput=renderStack;
 window.addEventListener("resize",()=>{if(document.getElementById("stack").classList.contains("on"))renderStack()});
 
