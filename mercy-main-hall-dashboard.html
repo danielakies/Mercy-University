@@ -150,6 +150,10 @@ body.locked .shell{visibility:hidden;pointer-events:none}
 .tax-key{display:flex;flex-wrap:wrap;gap:10px 16px;margin:0 0 14px;padding:10px 14px;background:#f3faf6;border:1px solid #d7e8dd;border-radius:10px}
 .tax-key .tk{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;color:var(--navy)}
 .tax-key .tk i{width:12px;height:12px;border-radius:3px;border:1px solid #0002}
+.taxchip{display:inline-flex;align-items:center;justify-content:center;min-width:1.55em;padding:1px 6px;border-radius:4px;border:1.5px solid;font:800 11px/1.3 "Segoe UI",Arial;background:#fff}
+.filt-clear{align-self:end;border:1px solid #cbd4dd;background:#fff;border-radius:7px;padding:8px 12px;cursor:pointer;font:650 12px inherit;color:var(--navy)}
+.filt-clear:hover{border-color:var(--blue);color:var(--blue)}
+.filt-meta{margin-left:auto;color:var(--muted);font-size:12px;align-self:center}
 .west-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
 .west-grid.two{grid-template-columns:1fr 1fr}
 .west-pies{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
@@ -234,14 +238,18 @@ body.locked .shell{visibility:hidden;pointer-events:none}
       <aside class="card"><div class="card-hd"><h3>Program zones</h3><span class="right" id="zoneCount"></span></div><div class="zdetail hidden" id="zoneDetail"></div><div class="legend" id="legend"></div></aside>
     </div>
     <div class="notice"><b>Current comparison boundary</b>The 2021 plan is a program-zone plan, while the April 2025 report inventories instructional rooms only. The dashboard therefore compares floor/program totals and room utilization; a complete current room schedule is still needed for a one-to-one whole-building reconciliation.</div>
-    <div class="section-title"><div><h2>Instructional room inventory</h2><p>53 Main Hall classrooms and laboratories from the utilization report — click any row for the full record</p></div></div>
+    <div class="section-title"><div><h2>Instructional room inventory</h2><p>53 Main Hall classrooms and laboratories from the utilization report — filter by school, seat band, type, or specialty</p></div></div>
     <div class="toolbar">
-      <div class="field"><label>Search</label><input id="roomSearch" placeholder="Room, type, school or department"></div>
+      <div class="field"><label>Search</label><input id="roomSearch" placeholder="Room, school, specialty…"></div>
       <div class="field"><label>Floor</label><select id="roomFloor"><option value="">All floors</option><option value="G">Ground</option><option value="1">First</option><option value="2">Second</option><option value="3">Third</option></select></div>
       <div class="field"><label>Room type</label><select id="roomType"><option value="">All types</option></select></div>
-      <div class="source" id="roomCount"></div>
+      <div class="field"><label>School</label><select id="roomSchool"><option value="">All schools</option></select></div>
+      <div class="field"><label>Seat band</label><select id="roomTax"><option value="">All A–F</option></select></div>
+      <div class="field"><label>Specialty</label><select id="roomSpec"><option value="">All / none</option></select></div>
+      <button type="button" class="filt-clear" id="roomClear">Clear filters</button>
+      <div class="filt-meta" id="roomCount"></div>
     </div>
-    <section class="card table-wrap"><table><thead><tr><th>Room</th><th>Floor</th><th>Type</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">ASF/Seat</th><th class="num">Seat occupancy</th><th class="num">Weekly hrs.</th><th class="num">Hour utilization</th><th>Department / school use</th></tr></thead><tbody id="rooms"></tbody></table></section>
+    <section class="card table-wrap"><table><thead><tr><th>Room</th><th>Floor</th><th>Type</th><th>Band</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">ASF/Seat</th><th class="num">Seat occupancy</th><th class="num">Weekly hrs.</th><th class="num">Hour utilization</th><th>Department / school use</th></tr></thead><tbody id="rooms"></tbody></table></section>
   </main>
 
   <main id="stack" class="view">
@@ -326,8 +334,9 @@ body.locked .shell{visibility:hidden;pointer-events:none}
     </div>
     <div class="section-title"><div><h2>Findings</h2><p>Drawn from the campus analysis and applied to Main Hall</p></div></div>
     <div class="findings" id="utilFindings"></div>
-    <div class="section-title"><div><h2>Room inventory detail</h2><p>Click a row for the full record · sorted by weekly hours</p></div></div>
+    <div class="section-title"><div><h2>Room inventory detail</h2><p>Filter charts and the table together · click a row for the full record</p></div></div>
     <div class="toolbar">
+      <div class="field"><label>Search</label><input id="utilSearch" placeholder="Room, school, specialty…"></div>
       <div class="field"><label>Show</label>
         <select id="utilFilter">
           <option value="all">All instructional rooms</option>
@@ -336,12 +345,31 @@ body.locked .shell{visibility:hidden;pointer-events:none}
           <option value="hall">Lecture hall</option>
         </select>
       </div>
-      <div class="source" id="utilCount"></div>
+      <div class="field"><label>School</label><select id="utilSchool"><option value="">All schools</option></select></div>
+      <div class="field"><label>Seat band</label><select id="utilTax"><option value="">All A–F</option></select></div>
+      <div class="field"><label>Floor</label><select id="utilFloor"><option value="">All floors</option><option value="G">Ground</option><option value="1">First</option><option value="2">Second</option><option value="3">Third</option></select></div>
+      <button type="button" class="filt-clear" id="utilClear">Clear filters</button>
+      <div class="filt-meta" id="utilCount"></div>
     </div>
-    <section class="card table-wrap util-card"><table><thead><tr><th>Room</th><th>Type</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">ASF/Seat</th><th class="num">Courses</th><th class="num">Seat occ.</th><th class="num">Weekly hrs.</th><th class="num">% of hours</th><th>vs targets</th></tr></thead><tbody id="utilRows"></tbody></table></section>
+    <section class="card table-wrap util-card"><table><thead><tr><th>Room</th><th>Type</th><th>Band</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">ASF/Seat</th><th class="num">Courses</th><th class="num">Seat occ.</th><th class="num">Weekly hrs.</th><th class="num">% of hours</th><th>vs targets</th></tr></thead><tbody id="utilRows"></tbody></table></section>
 
-    <div class="section-title" style="margin-top:28px"><div><h2>Westchester Campus — utilization overview</h2><p id="westNote">Fall 2023 day metrics for Main Hall, Mercy Hall, Victory Hall, and Gratia Mahony Hall · room-size bands A–F by seat count</p></div></div>
+    <div class="section-title" style="margin-top:28px"><div><h2>Westchester Campus — utilization overview</h2><p id="westNote">Fall 2023 day metrics for Main Hall, Mercy Hall, Victory Hall, and Gratia Mahony Hall · filter charts and the inventory by building, type, and seat band</p></div></div>
     <div class="notice util-notice" id="westDataNote"></div>
+    <div class="toolbar">
+      <div class="field"><label>Search</label><input id="westSearch" placeholder="Room code…"></div>
+      <div class="field"><label>Building</label><select id="westBldg"><option value="">All buildings</option></select></div>
+      <div class="field"><label>Room type</label><select id="westType"><option value="">All types</option></select></div>
+      <div class="field"><label>Space type</label>
+        <select id="westMgmt">
+          <option value="">All spaces</option>
+          <option value="classroom">Registrar classrooms</option>
+          <option value="lab">Specialty labs</option>
+        </select>
+      </div>
+      <div class="field"><label>Seat band</label><select id="westTax"><option value="">All A–F</option></select></div>
+      <button type="button" class="filt-clear" id="westClear">Clear filters</button>
+      <div class="filt-meta" id="westCount"></div>
+    </div>
     <div class="stats" id="westStats"></div>
     <div class="tax-key" id="westTaxKey"></div>
     <div class="west-grid">
@@ -358,6 +386,8 @@ body.locked .shell{visibility:hidden;pointer-events:none}
       <section class="card west-card"><div class="card-hd"><h2>Utilization by room size</h2><span class="sub">Fall 2023 day window · seat-size bands A–F</span></div><svg class="svgchart" id="westTaxChart"></svg></section>
       <section class="card west-card"><div class="card-hd"><h2>Utilization by space type and room size</h2><span class="sub">Fall 2023 day window · classrooms vs specialty labs</span></div><svg class="svgchart" id="westMgmtTaxChart"></svg></section>
     </div>
+    <div class="section-title"><div><h2>Westchester room inventory</h2><p>Filtered by the controls above · click a row for the record</p></div></div>
+    <section class="card table-wrap util-card"><table><thead><tr><th>Room</th><th>Building</th><th>Type</th><th>Band</th><th class="num">ASF</th><th class="num">Seats</th><th class="num">Courses</th><th class="num">Seat occ.</th><th class="num">Weekly hrs.</th><th class="num">% of hours</th></tr></thead><tbody id="westRows"></tbody></table></section>
     <div class="section-title" style="margin-top:26px"><div><h2>Time of day</h2><p>Classrooms in use at each five-minute increment across the Westchester Campus, Fall 2023</p></div></div>
     <div class="notice util-notice" id="westTimeNote"></div>
     <div class="tod-stack">
@@ -427,6 +457,56 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const Z=window.MERCY_ZONE_PLANS||{floors:[]}, I=window.MERCY_INVENTORY||{rooms:[]}, A=window.MERCY_ANALYSIS||{mep:[],site:{}};
 const FICM=window.MERCY_FICM||{series:[],zones:{}};
 const rooms=I.rooms||[], floors=Z.floors||[];
+
+/* Seat-band taxonomy A–F — same thresholds as the Westchester charts and the example dashboard. */
+const SEAT_TAX={
+  A:{label:"A · 5–12 seats",seats:"5–12",color:"#F28620",min:5,max:12},
+  B:{label:"B · 13–18 seats",seats:"13–18",color:"#F9ED32",min:13,max:18},
+  C:{label:"C · 19–36 seats",seats:"19–36",color:"#49B0B9",min:19,max:36},
+  D:{label:"D · 37–74 seats",seats:"37–74",color:"#00AEEF",min:37,max:74},
+  E:{label:"E · 75–200 seats",seats:"75–200",color:"#3D54A5",min:75,max:200},
+  F:{label:"F · 201+ seats",seats:"201+",color:"#8B5E3C",min:201,max:1e9}
+};
+function seatBand(seats){
+  if(seats==null||seats==="")return null;
+  const s=+seats; if(!Number.isFinite(s)||s<=0)return null;
+  if(s<=12)return "A"; if(s<=18)return "B"; if(s<=36)return "C"; if(s<=74)return "D"; if(s<=200)return "E"; return "F";
+}
+rooms.forEach(r=>{r.taxonomy=r.taxonomy||seatBand(r.seats); if(r.taxonomy&&SEAT_TAX[r.taxonomy])r.taxonomyLabel=SEAT_TAX[r.taxonomy].label});
+const westRooms=(window.MERCY_WESTCHESTER&&window.MERCY_WESTCHESTER.rooms)||[];
+westRooms.forEach(r=>{r.taxonomy=r.taxonomy||seatBand(r.seats)});
+const taxChip=code=>{
+  if(!code||!SEAT_TAX[code])return "—";
+  const t=SEAT_TAX[code];
+  return `<span class="taxchip" style="color:${t.color};border-color:${t.color}" title="${esc(t.label)}">${code}</span>`;
+};
+const schoolOf=r=>Object.keys(r.departmentUse||{}).sort((a,b)=>(r.departmentUse[b]||0)-(r.departmentUse[a]||0));
+const allSchools=[...new Set(rooms.flatMap(schoolOf))].sort();
+const allSpecs=[...new Set(rooms.map(r=>(r.specialty||"").trim()).filter(Boolean))].sort();
+const fillTaxSelect=el=>{el.innerHTML=`<option value="">All A–F</option>`+Object.keys(SEAT_TAX).map(k=>`<option value="${k}">${esc(SEAT_TAX[k].label)}</option>`).join("")};
+const fillSchoolSelect=el=>{el.innerHTML=`<option value="">All schools</option>`+allSchools.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("")};
+function matchRoomFilters(r,opts){
+  const q=(opts.q||"").trim().toLowerCase();
+  if(q){
+    const hay=[r.room,r.roomType,r.specialty,r.floor,r.building,r.taxonomy,r.taxonomyLabel,(r.departments||[]).join(" "),JSON.stringify(r.departmentUse||{})].join(" ").toLowerCase();
+    if(!hay.includes(q))return false;
+  }
+  if(opts.floor&&r.floor!==opts.floor)return false;
+  if(opts.type&&r.roomType!==opts.type)return false;
+  if(opts.tax&&r.taxonomy!==opts.tax)return false;
+  if(opts.spec){
+    if(opts.spec==="__none__"){if(r.specialty)return false}
+    else if(r.specialty!==opts.spec)return false;
+  }
+  if(opts.school&&!(r.departments||[]).includes(opts.school)&&!(r.departmentUse||{})[opts.school])return false;
+  if(opts.building&&r.building!==opts.building)return false;
+  if(opts.mgmt==="classroom"&&!(r.roomType==="General-Purpose Classroom"||r.roomType==="Lecture Hall"))return false;
+  if(opts.mgmt==="lab"&&!(r.roomType==="Teaching Laboratory"||r.roomType==="Open Laboratory"))return false;
+  if(opts.mode==="classroom"&&r.roomType!=="General-Purpose Classroom")return false;
+  if(opts.mode==="lab"&&!(r.roomType==="Teaching Laboratory"||r.roomType==="Open Laboratory"))return false;
+  if(opts.mode==="hall"&&r.roomType!=="Lecture Hall")return false;
+  return true;
+}
 const ficmSeries=FICM.series||[];
 const ficmOf=name=>{
   const code=FICM.zones?.[name];
@@ -662,12 +742,15 @@ zoomFit.onclick=fitView;
 window.addEventListener("resize",()=>{sizeCanvas();fitView()});
 
 function openRoom(code){
-  const r=rooms.find(x=>x.room===code); if(!r)return;
-  const z=zoneForRoom(r), use=Object.entries(r.departmentUse||{}).sort((a,b)=>b[1]-a[1]);
+  const r=rooms.find(x=>x.room===code)||westRooms.find(x=>x.room===code); if(!r)return;
+  const z=r.floor?zoneForRoom(r):null, use=Object.entries(r.departmentUse||{}).sort((a,b)=>b[1]-a[1]);
+  const tax=r.taxonomy||seatBand(r.seats);
   rmTitle.textContent=r.room;
-  rmBody.innerHTML=`<div>${pill(r.roomType)}${r.specialty?` <span class="pill">${esc(r.specialty)}</span>`:""}</div>
+  rmBody.innerHTML=`<div>${pill(r.roomType)}${r.specialty?` <span class="pill">${esc(r.specialty)}</span>`:""}${tax?` ${taxChip(tax)}`:""}</div>
     <dl class="kv" style="margin-top:14px">
+      ${r.building?`<dt>Building</dt><dd>${esc(r.building)}</dd>`:""}
       <dt>Floor</dt><dd>${r.floor?esc(floorLabel(r.floor)):"Not identified in the report"}</dd>
+      <dt>Seat band</dt><dd>${tax?`${taxChip(tax)} ${esc((SEAT_TAX[tax]||{}).label||"")}`:"—"}</dd>
       <dt>Assignable SF</dt><dd>${fmt(r.asf)}</dd>
       <dt>Seats</dt><dd>${fmt(r.seats)}</dd>
       <dt>ASF per seat</dt><dd>${fmt(r.asfPerSeat)}</dd>
@@ -676,10 +759,10 @@ function openRoom(code){
       <dt>Weekly hours used</dt><dd>${fmt(r.weeklyHours)}</dd>
       <dt>Share of target hours</dt><dd>${r.hoursPercent==null?"—":r.hoursPercent+"%"}</dd>
       <dt>Program zone</dt><dd>${z?esc(z.name)+" (inferred)":"Not mapped"}</dd>
-      <dt>FICM series</dt><dd>${(()=>{const fc=ficmOf(z?z.name:"");return z?`${esc(fc.series)} · ${esc(fc.label)}`: "—"})()}</dd>
+      <dt>FICM series</dt><dd>${(()=>{const fc=ficmOf(z?z.name:"");return z?`${esc(fc.series)} · ${esc(fc.label)}`:esc(r.ficm||"—")})()}</dd>
     </dl>
     <h4>Scheduled users — Fall 2023 daytime</h4>
-    ${use.length?`<dl class="kv">${use.map(([s,n])=>`<dt>${esc(s)}</dt><dd>${n} section${n===1?"":"s"}</dd>`).join("")}</dl>`:`<p class="cite" style="margin:0">No daytime course sections were scheduled in this room in the appendix.</p>`}
+    ${use.length?`<dl class="kv">${use.map(([s,n])=>`<dt>${esc(s)}</dt><dd>${n} section${n===1?"":"s"}</dd>`).join("")}</dl>`:`<p class="cite" style="margin:0">${r.building&&r.building!=="Main Hall"?"School-level course appendix is only linked for Main Hall in this dashboard.":"No daytime course sections were scheduled in this room in the appendix."}</p>`}
     ${r.comment?`<h4>Report comment</h4><p style="margin:0;color:#4f5f70">${esc(r.comment)}</p>`:""}
     <div class="btnrow">${z?`<button id="rmShow">Show zone on plan</button>`:""}<button class="ghost" id="rmDone">Close</button></div>`;
   roomModal.classList.remove("hidden");
@@ -699,13 +782,19 @@ window.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!roomModal.c
 const floorLabel=id=>(floors.find(f=>f.id===id)||{}).label||id;
 function stats(items){return items.map(x=>`<div class="stat"><div class="n">${x[0]}</div><div class="l">${x[1]}</div></div>`).join("")}
 const types=[...new Set(rooms.map(r=>r.roomType))];roomType.innerHTML+=types.map(x=>`<option>${esc(x)}</option>`).join("");
+fillSchoolSelect(roomSchool); fillTaxSelect(roomTax);
+roomSpec.innerHTML=`<option value="">All / none</option><option value="__none__">No specialty label</option>`+allSpecs.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("");
 function pill(t){return `<span class="pill ${t.startsWith("Teaching")?"lab":t.startsWith("Open")?"open":t.startsWith("Lecture")?"hall":""}">${esc(t)}</span>`}
 function renderRooms(){
-  const q=roomSearch.value.trim().toLowerCase(), fl=roomFloor.value, ty=roomType.value;
-  const out=rooms.filter(r=>(!q||JSON.stringify(r).toLowerCase().includes(q))&&(!fl||r.floor===fl)&&(!ty||r.roomType===ty));
+  const out=rooms.filter(r=>matchRoomFilters(r,{
+    q:roomSearch.value, floor:roomFloor.value, type:roomType.value,
+    school:roomSchool.value, tax:roomTax.value, spec:roomSpec.value
+  }));
   roomCount.textContent=`${out.length} of ${rooms.length} rooms · ${fmt(out.reduce((s,r)=>s+r.asf,0))} ASF`;
-  document.getElementById("rooms").innerHTML=out.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b>${r.specialty?`<div class="cite">${esc(r.specialty)}</div>`:""}</td><td>${r.floor||"—"}</td><td>${pill(r.roomType)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.asfPerSeat)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${esc((r.departments||[]).join(", ")||(r.specialty?"Stated specialty — see label":"No Fall 2023 daytime schedule"))}</td></tr>`).join("");
-}roomSearch.oninput=roomFloor.onchange=roomType.onchange=renderRooms;
+  document.getElementById("rooms").innerHTML=out.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b>${r.specialty?`<div class="cite">${esc(r.specialty)}</div>`:""}</td><td>${r.floor||"—"}</td><td>${pill(r.roomType)}</td><td>${taxChip(r.taxonomy)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.asfPerSeat)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${esc((r.departments||[]).join(", ")||(r.specialty?"Stated specialty — see label":"No Fall 2023 daytime schedule"))}</td></tr>`).join("");
+}
+roomSearch.oninput=roomFloor.onchange=roomType.onchange=roomSchool.onchange=roomTax.onchange=roomSpec.onchange=renderRooms;
+roomClear.onclick=()=>{roomSearch.value="";roomFloor.value="";roomType.value="";roomSchool.value="";roomTax.value="";roomSpec.value="";renderRooms()};
 document.body.addEventListener("click",e=>{
   const open=e.target.closest("[data-openfloor]");
   if(open){e.preventDefault();activate("plan");floorSel.value=open.dataset.openfloor;showFloor();return}
@@ -1138,14 +1227,26 @@ function vsTargets(r){
   }
   return "—";
 }
+function filteredUtilRooms(){
+  return rooms.filter(r=>matchRoomFilters(r,{
+    q:utilSearch.value, mode:utilFilter.value, school:utilSchool.value,
+    tax:utilTax.value, floor:utilFloor.value
+  }));
+}
 function renderUtil(){
-  const cls=rooms.filter(isClass), labs=rooms.filter(isLab), hall=rooms.filter(isHall);
+  fillSchoolSelect(utilSchool); fillTaxSelect(utilTax);
+  renderUtilCharts();
+  utilFindings.innerHTML=(U.findings||[]).map(f=>`<article class="finding"><h3>${esc(f.title)}</h3><p>${esc(f.body)}</p></article>`).join("");
+}
+function renderUtilCharts(){
+  const filtered=filteredUtilRooms();
+  const cls=filtered.filter(isClass), labs=filtered.filter(isLab), hall=filtered.filter(isHall);
   const clsAsf=avgOf(cls,"asfPerSeat"), clsOcc=avgOf(cls,"seatOccupancy"), clsHrs=avgOf(cls,"weeklyHours"), clsPct=avgOf(cls,"hoursPercent");
   const labOcc=avgOf(labs.filter(r=>r.seatOccupancy!=null),"seatOccupancy"), labHrs=avgOf(labs.filter(r=>r.weeklyHours!=null),"weeklyHours");
   utilStats.innerHTML=stats([
-    [fmt(rooms.length),"Instructional rooms"],[fmt(rooms.reduce((s,r)=>s+r.asf,0)),"Instructional ASF"],
-    [fmt(rooms.reduce((s,r)=>s+r.seats,0)),"Seats / stations"],[fmt(cls.length),"Classrooms"],
-    [fmt(labs.length),"Laboratories"],[hall.length?fmt(hall[0].asf):"—","Lecture hall ASF"]
+    [fmt(filtered.length),"Rooms in filter"],[fmt(filtered.reduce((s,r)=>s+r.asf,0)),"Instructional ASF"],
+    [fmt(filtered.reduce((s,r)=>s+r.seats,0)),"Seats / stations"],[fmt(cls.length),"Classrooms"],
+    [fmt(labs.length),"Laboratories"],[hall.length?fmt(hall.reduce((s,r)=>s+r.asf,0)):"—","Lecture hall ASF"]
   ]);
   utilBench.innerHTML=`
     <div class="bench"><div class="bt">Classroom ASF / Seat</div><div class="bn">20–25</div><div class="bd">${esc(U.benchmarks?.classroom?.asfPerSeat?.note||"")}</div></div>
@@ -1185,17 +1286,15 @@ function renderUtil(){
   const labsHrs=[...labs].filter(r=>r.weeklyHours!=null).sort((a,b)=>a.weeklyHours-b.weeklyHours);
   utilBarChart(utilLabOccChart,labsOcc,"seatOccupancy",{target:80,max:100,suffix:"%"});
   utilBarChart(utilLabHrsChart,labsHrs,"weeklyHours",{target:18.7,max:40});
-  utilFindings.innerHTML=(U.findings||[]).map(f=>`<article class="finding"><h3>${esc(f.title)}</h3><p>${esc(f.body)}</p></article>`).join("");
-  renderUtilRows();
+  renderUtilRows(filtered);
 }
-function renderUtilRows(){
-  const mode=utilFilter.value;
-  const out=rooms.filter(r=>mode==="all"||(mode==="classroom"&&isClass(r))||(mode==="lab"&&isLab(r))||(mode==="hall"&&isHall(r)))
-    .sort((a,b)=>(b.weeklyHours??-1)-(a.weeklyHours??-1));
-  utilCount.textContent=`${out.length} rooms · ${fmt(out.reduce((s,r)=>s+r.asf,0))} ASF · CSV export available`;
-  utilRows.innerHTML=out.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b>${r.specialty?`<div class="cite">${esc(r.specialty)}</div>`:""}</td><td>${pill(r.roomType)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.asfPerSeat)}</td><td class="num">${fmt(r.courseCount)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${vsTargets(r)}</td></tr>`).join("");
+function renderUtilRows(pre){
+  const out=(pre||filteredUtilRooms()).sort((a,b)=>(b.weeklyHours??-1)-(a.weeklyHours??-1));
+  utilCount.textContent=`${out.length} of ${rooms.length} rooms · ${fmt(out.reduce((s,r)=>s+r.asf,0))} ASF`;
+  utilRows.innerHTML=out.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b>${r.specialty?`<div class="cite">${esc(r.specialty)}</div>`:""}</td><td>${pill(r.roomType)}</td><td>${taxChip(r.taxonomy)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.asfPerSeat)}</td><td class="num">${fmt(r.courseCount)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td><td>${vsTargets(r)}</td></tr>`).join("");
 }
-utilFilter.onchange=renderUtilRows;
+utilSearch.oninput=utilFilter.onchange=utilSchool.onchange=utilTax.onchange=utilFloor.onchange=()=>renderUtilCharts();
+utilClear.onclick=()=>{utilSearch.value="";utilFilter.value="all";utilSchool.value="";utilTax.value="";utilFloor.value="";renderUtilCharts()};
 
 /* ---------- Column and pie charts for the Westchester overview ---------- */
 const NAVY="#1F3864", SKY="#9DC3E6";
@@ -1309,25 +1408,47 @@ function labeledPie(el,rows,opts){
   el.setAttribute("viewBox",`0 0 ${W} ${H}`);
   el.innerHTML=s;
 }
+function filteredWestRooms(){
+  return westRooms.filter(r=>matchRoomFilters(r,{
+    q:westSearch.value, building:westBldg.value, type:westType.value,
+    mgmt:westMgmt.value, tax:westTax.value
+  }));
+}
+function avgNum(arr){const v=arr.filter(x=>x!=null&&!Number.isNaN(+x));return v.length?v.reduce((a,b)=>a+b,0)/v.length:null}
+function westIsClass(r){return r.roomType==="General-Purpose Classroom"||r.roomType==="Lecture Hall"}
+function westIsLab(r){return r.roomType==="Teaching Laboratory"||r.roomType==="Open Laboratory"}
 function renderWestchester(){
   const W=window.MERCY_WESTCHESTER; if(!W){westDataNote.innerHTML="<b>Westchester data missing</b>Run build_westchester_util.py to regenerate.";return}
-  const tax=W.taxonomy||{}, tot=W.totals||{}, dow=W.dayOfWeek||{};
+  const tax=W.taxonomy||Object.fromEntries(Object.entries(SEAT_TAX).map(([k,v])=>[k,{label:v.label,color:v.color,seats:v.seats}]));
+  const dow=W.dayOfWeek||{};
+  if(!westBldg.options.length||westBldg.options.length===1){
+    westBldg.innerHTML=`<option value="">All buildings</option>`+[...new Set(westRooms.map(r=>r.building))].sort().map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join("");
+    westType.innerHTML=`<option value="">All types</option>`+[...new Set(westRooms.map(r=>r.roomType))].sort().map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join("");
+    fillTaxSelect(westTax);
+  }
   westDataNote.innerHTML=`<b>Data used</b>${esc(W.period)}. Utilization = ${esc(W.utilizationMetric)}. `
     +`CSV: <a href="Mercy supporting documents/westchester_instructional_inventory.csv">westchester_instructional_inventory.csv</a>. `
-    +`<b>No sample week exists in the source</b> — the day-of-week chart uses Fall 2023 <i>peak simultaneous classrooms in use</i> (campus max ${dow.peakSimultaneous} of ${dow.activeClassrooms}). `
-    +`Event-type chart omitted as requested.`;
-  westStats.innerHTML=stats([
-    [fmt(tot.rooms),"Westchester rooms"],[fmt(tot.scheduled),"With day schedule"],
-    [tot.utilization==null?"—":tot.utilization.toFixed(1)+"%","Avg hour utilization"],
-    [fmt(tot.courses),"Fall day courses"],[fmt(tot.seats),"Seats / stations"],[fmt(tot.asf),"Instructional ASF"]
-  ]);
-  westTaxKey.innerHTML=Object.entries(tax).map(([k,v])=>`<span class="tk"><i style="background:${v.color}"></i>${esc(v.label)}</span>`).join("");
+    +`Filters below reshape the inventory charts and table from the room list. `
+    +`<b>Day-of-week</b> stays campus-wide (peak simultaneous classrooms from the report). `
+    +`Westchester rooms do not carry school assignments in the source tables — use Main Hall filters for school.`;
 
-  const mgmt=W.byManagement||{}, mgmtKeys=Object.keys(mgmt);
-  columnChart(westMgmtChart, mgmtKeys.map((label,i)=>({
-    label, short:i?"Specialty labs":"Registrar classrooms", value:mgmt[label].utilization,
-    sub:`${mgmt[label].rooms} rooms`, color:i?SKY:NAVY
-  })), {max:100});
+  const list=filteredWestRooms();
+  const sched=list.filter(r=>r.utilization!=null);
+  westCount.textContent=`${list.length} of ${westRooms.length} rooms`;
+  westStats.innerHTML=stats([
+    [fmt(list.length),"Rooms in filter"],[fmt(sched.length),"With day schedule"],
+    [avgNum(sched.map(r=>r.utilization))==null?"—":avgNum(sched.map(r=>r.utilization)).toFixed(1)+"%","Avg hour utilization"],
+    [fmt(list.reduce((s,r)=>s+(r.courseCount||0),0)),"Fall day courses"],
+    [fmt(list.reduce((s,r)=>s+(r.seats||0),0)),"Seats / stations"],
+    [fmt(list.reduce((s,r)=>s+(r.asf||0),0)),"Instructional ASF"]
+  ]);
+  westTaxKey.innerHTML=Object.entries(tax).map(([k,v])=>`<span class="tk"><i style="background:${v.color}"></i>${esc(v.label||SEAT_TAX[k]?.label||k)}</span>`).join("");
+
+  const cls=list.filter(westIsClass), labs=list.filter(westIsLab);
+  columnChart(westMgmtChart, [
+    {label:"Registrar classrooms", short:"Registrar classrooms", value:avgNum(cls.map(r=>r.utilization)), sub:`${cls.length} rooms`, color:NAVY},
+    {label:"Specialty labs", short:"Specialty labs", value:avgNum(labs.map(r=>r.utilization)), sub:`${labs.length} rooms`, color:SKY}
+  ], {max:100});
 
   columnChart(westDayChart, (dow.days||[]).map(d=>({
     label:d.day, short:d.day.slice(0,3), value:d.utilization,
@@ -1335,31 +1456,46 @@ function renderWestchester(){
     color:d.peakRooms===dow.peakSimultaneous?NAVY:SKY
   })), {max:100});
 
-  const bldg=W.byBuilding||{};
-  columnChart(westBldgChart, Object.entries(bldg).map(([label,x])=>({
-    label, short:label.replace(" Hall",""), value:x.utilization,
-    sub:`${x.scheduled}/${x.rooms} rooms`, color:label==="Main Hall"?NAVY:SKY
-  })), {max:100});
+  const bldgOrder=[...new Set(list.map(r=>r.building))];
+  columnChart(westBldgChart, bldgOrder.map(label=>{
+    const xs=list.filter(r=>r.building===label), sc=xs.filter(r=>r.utilization!=null);
+    return {label, short:label.replace(" Hall",""), value:avgNum(sc.map(r=>r.utilization)),
+      sub:`${sc.length}/${xs.length} rooms`, color:label==="Main Hall"?NAVY:SKY};
+  }), {max:100});
 
-  const taxRows=Object.entries(W.byTaxonomy||{}).filter(([,x])=>x.rooms>0);
-  labeledPie(westPieSpaces, taxRows.map(([k,x])=>({key:k,label:x.label,color:x.color,value:x.rooms})), {totalLabel:"spaces"});
-  labeledPie(westPieCourses, taxRows.filter(([,x])=>x.courses>0).map(([k,x])=>({key:k,label:x.label,color:x.color,value:x.courses})), {totalLabel:"courses"});
-  labeledPie(westPieHours, taxRows.filter(([,x])=>x.weeklyHoursTotal>0).map(([k,x])=>({key:k,label:x.label,color:x.color,value:Math.round(x.weeklyHoursTotal)})), {totalLabel:"weekly hours"});
+  const taxRows=Object.keys(tax).map(k=>{
+    const xs=list.filter(r=>r.taxonomy===k), sc=xs.filter(r=>r.utilization!=null);
+    return {key:k, label:tax[k].label||SEAT_TAX[k]?.label||k, color:tax[k].color||SEAT_TAX[k]?.color,
+      rooms:xs.length, courses:xs.reduce((s,r)=>s+(r.courseCount||0),0),
+      weeklyHoursTotal:xs.reduce((s,r)=>s+(r.weeklyHours||0),0),
+      utilization:avgNum(sc.map(r=>r.utilization))};
+  }).filter(x=>x.rooms>0);
+
+  labeledPie(westPieSpaces, taxRows.map(x=>({key:x.key,label:x.label,color:x.color,value:x.rooms})), {totalLabel:"spaces"});
+  labeledPie(westPieCourses, taxRows.filter(x=>x.courses>0).map(x=>({key:x.key,label:x.label,color:x.color,value:x.courses})), {totalLabel:"courses"});
+  labeledPie(westPieHours, taxRows.filter(x=>x.weeklyHoursTotal>0).map(x=>({key:x.key,label:x.label,color:x.color,value:Math.round(x.weeklyHoursTotal)})), {totalLabel:"weekly hours"});
 
   const bandRange=s=>String(s).replace(/^[A-F][^0-9]*/,"");
-  columnChart(westTaxChart, taxRows.map(([k,x])=>({
+  columnChart(westTaxChart, taxRows.map(x=>({
     label:x.label, short:bandRange(x.label), value:x.utilization, sub:`${x.rooms} rooms`,
-    chip:k, chipColor:x.color, color:NAVY
+    chip:x.key, chipColor:x.color, color:NAVY
   })), {max:100});
 
-  const mt=W.byManagementTaxonomy||{}, mtKeys=Object.keys(mt);
   groupedColumnChart(westMgmtTaxChart,
-    taxRows.map(([k,x])=>({label:x.label, short:bandRange(x.label), chip:k, chipColor:x.color,
-      values:{cls:(mt[mtKeys[0]]||{})[k], lab:(mt[mtKeys[1]]||{})[k]}})),
+    taxRows.map(x=>{
+      const c=cls.filter(r=>r.taxonomy===x.key), l=labs.filter(r=>r.taxonomy===x.key);
+      return {label:x.label, short:bandRange(x.label), chip:x.key, chipColor:x.color,
+        values:{cls:avgNum(c.map(r=>r.utilization)), lab:avgNum(l.map(r=>r.utilization))}};
+    }),
     [{key:"cls",label:"Registrar classrooms",color:NAVY},{key:"lab",label:"Specialty labs",color:SKY}],
     {max:100});
 
+  const sorted=[...list].sort((a,b)=>(b.weeklyHours??-1)-(a.weeklyHours??-1));
+  westRows.innerHTML=sorted.map(r=>`<tr data-room="${esc(r.room)}"><td><b>${esc(r.room)}</b></td><td>${esc(r.building||"—")}</td><td>${pill(r.roomType)}</td><td>${taxChip(r.taxonomy)}</td><td class="num">${fmt(r.asf)}</td><td class="num">${fmt(r.seats)}</td><td class="num">${fmt(r.courseCount)}</td><td class="num">${r.seatOccupancy==null?"—":r.seatOccupancy+"%"}</td><td class="num">${fmt(r.weeklyHours)}</td><td class="num">${r.hoursPercent==null?"—":r.hoursPercent+"%"}</td></tr>`).join("")
+    ||`<tr><td colspan="10" class="cite">No rooms match the current filters.</td></tr>`;
 }
+westSearch.oninput=westBldg.onchange=westType.onchange=westMgmt.onchange=westTax.onchange=()=>renderWestchester();
+westClear.onclick=()=>{westSearch.value="";westBldg.value="";westType.value="";westMgmt.value="";westTax.value="";renderWestchester()};
 
 /* ---------- Time-of-day curves (digitised from the report's own vector artwork) ---------- */
 const hhmm=m=>`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`;
