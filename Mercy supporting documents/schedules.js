@@ -751,8 +751,8 @@ window.MERCY_INVENTORY = {
     {
       "room": "MHLH",
       "floor": "",
-      "roomType": "General-Purpose Classroom",
-      "ficm": "FICM 100",
+      "roomType": "Lecture Hall",
+      "ficm": "FICM 610",
       "specialty": "Lecture hall",
       "asf": 2164,
       "seats": 178,

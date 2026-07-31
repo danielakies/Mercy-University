@@ -100,7 +100,6 @@ window.MERCY_FICM = {
   // stated program use, not a surveyed FICM inventory.
   zones: {
     "GENERAL CLASSROOMS": "100",
-    "GENERAL USE CLASSROOMS": "100",
     "SIM LAB": "200",
     "HEALTH & NATURAL SCIENCES": "200",
     "VET TECH": "200",
@@ -113,6 +112,8 @@ window.MERCY_FICM = {
     "SECURITY SERVICES": "300",
     "VETERAN SERVICES": "300",
     "CONTROL": "300",
+    "MEETING ROOM": "300",
+    "FACULTY SUPPORT / LOUNGE": "300",
     "LIBRARY": "400",
     "SPEECH & HEARING CTR": "500",
     "VITALE CENTER": "500",
@@ -120,8 +121,6 @@ window.MERCY_FICM = {
     "CAFE": "600",
     "FOOD SERVICE": "600",
     "RETAIL": "600",
-    "MEETING ROOM": "600",
-    "FACULTY SUPPORT / LOUNGE": "600",
     "GENERAL USE": "600",
     "STORAGE / CLOSETS": "700",
     "HEALTH CENTER": "800",

@@ -32,6 +32,14 @@ FLOORS = [
     {"page": 3, "id": "G", "label": "Ground Floor"},
 ]
 
+# Same program, inconsistent legend wording across sheets (3rd floor used the longer form).
+NAME_ALIASES = {
+    "GENERAL USE CLASSROOMS": "GENERAL CLASSROOMS",
+}
+
+def canon_name(name: str) -> str:
+    return NAME_ALIASES.get(name.upper(), name)
+
 # The legend block, in PDF points. Masked out before the plan colours are counted.
 LEGEND_BOX = (470, 0, 920, 236)
 SWATCH_MAX = 20
@@ -253,9 +261,10 @@ def main():
                 unmatched.append(r["name"])
                 continue
             c, n, d = bound[i]
-            zones.append({"name": r["name"], "color": hexof(c), "sf": r["sf"], "px": n})
-            totals[r["name"]] += r["sf"]
-            colour_of.setdefault(r["name"], hexof(c))
+            name = canon_name(r["name"])
+            zones.append({"name": name, "color": hexof(c), "sf": r["sf"], "px": n})
+            totals[name] += r["sf"]
+            colour_of.setdefault(name, hexof(c))
         zones.sort(key=lambda z: -z["sf"])
 
         # Pixel counts should track the printed square footages; a bad colour match shows up here.

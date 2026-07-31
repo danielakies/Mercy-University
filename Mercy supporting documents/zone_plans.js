@@ -264,7 +264,7 @@ window.MERCY_ZONE_PLANS = {
    "sf": 16545,
    "zones": [
     {
-     "name": "GENERAL USE CLASSROOMS",
+     "name": "GENERAL CLASSROOMS",
      "color": "#EFD18B",
      "sf": 3447,
      "px": 132031

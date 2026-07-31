@@ -1,0 +1,54 @@
+room,floor,roomType,ficm,specialty,asf,seats,asfPerSeat,courseCount,seatOccupancy,weeklyHours,hoursPercent,comment,departments
+MH111,1,General-Purpose Classroom,FICM 100,,724,36,20.1,11,55,29.7,80,,School of Liberal Arts; School of Business; School of Social & Behavioral Sciences; School of Health & Natural Sciences; School of Nursing
+MH113,1,General-Purpose Classroom,FICM 100,,1558,36,43.3,12,50,32.8,88,,School of Social & Behavioral Sciences; School of Liberal Arts; School of Health & Natural Sciences
+MH200,2,General-Purpose Classroom,FICM 100,,277,15,18.5,3,73,7.1,19,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH201,2,General-Purpose Classroom,FICM 100,,359,20,18.0,12,83,32.4,87,,School of Liberal Arts; School of Business; School of Social & Behavioral Sciences
+MH202,2,General-Purpose Classroom,FICM 100,,368,24,15.3,12,81,36.2,97,,School of Liberal Arts; School of Social & Behavioral Sciences; School of Health & Natural Sciences
+MH203,2,General-Purpose Classroom,FICM 100,,370,20,18.5,11,76,29.4,79,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH204,2,General-Purpose Classroom,FICM 100,,357,20,17.9,12,80,33.3,89,,School of Liberal Arts
+MH205,2,General-Purpose Classroom,FICM 100,,608,30,20.3,12,77,31.3,84,,School of Health & Natural Sciences; School of Liberal Arts; School of Social & Behavioral Sciences; School of Business
+MH206,2,General-Purpose Classroom,FICM 100,,341,18,18.9,6,56,13.8,37,,School of Social & Behavioral Sciences; School of Health & Natural Sciences; School of Liberal Arts
+MH211,2,General-Purpose Classroom,FICM 100,,910,42,21.7,14,55,35.8,96,,School of Health & Natural Sciences; School of Nursing; School of Liberal Arts; School of Business; School of Education
+MH213,2,General-Purpose Classroom,FICM 100,,950,30,31.7,12,60,32.7,88,,School of Liberal Arts; School of Social & Behavioral Sciences; School of Business; School of Health & Natural Sciences
+MH219,2,General-Purpose Classroom,FICM 100,,309,18,17.2,8,88,22.7,61,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH236,2,General-Purpose Classroom,FICM 100,,363,18,20.2,6,83,17.0,46,,School of Liberal Arts; School of Business
+MH238,2,General-Purpose Classroom,FICM 100,,564,30,18.8,10,58,30.2,81,,School of Health & Natural Sciences; School of Liberal Arts; School of Social & Behavioral Sciences
+MH240,2,General-Purpose Classroom,FICM 100,,564,30,18.8,10,63,29.3,79,,School of Liberal Arts; School of Health & Natural Sciences; School of Nursing; School of Social & Behavioral Sciences
+MH241,2,General-Purpose Classroom,FICM 100,,563,30,18.8,13,68,35.0,94,,School of Social & Behavioral Sciences; School of Liberal Arts; School of Nursing
+MH242,2,General-Purpose Classroom,FICM 100,,610,35,17.4,10,63,24.7,66,,School of Health & Natural Sciences; School of Business; School of Liberal Arts; School of Nursing; School of Social & Behavioral Sciences
+MH280,2,General-Purpose Classroom,FICM 100,,665,32,20.8,9,57,24.9,67,,School of Liberal Arts; School of Health & Natural Sciences
+MH310,3,General-Purpose Classroom,FICM 100,,555,29,19.1,11,75,28.9,77,,School of Liberal Arts; School of Social & Behavioral Sciences; School of Health & Natural Sciences; School of Business; School of Education
+MH312,3,General-Purpose Classroom,FICM 100,,558,24,23.3,11,79,30.8,83,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH316,3,General-Purpose Classroom,FICM 100,,375,18,20.8,7,80,19.7,53,,School of Liberal Arts
+MH324,3,General-Purpose Classroom,FICM 100,,562,30,18.7,9,77,24.8,66,,School of Health & Natural Sciences; School of Liberal Arts; School of Social & Behavioral Sciences
+MH326,3,General-Purpose Classroom,FICM 100,,562,30,18.7,9,57,21.4,57,,School of Health & Natural Sciences; School of Liberal Arts; School of Social & Behavioral Sciences
+MH332,3,General-Purpose Classroom,FICM 100,,410,19,21.6,5,72,11.3,30,,School of Liberal Arts; School of Social & Behavioral Sciences; School of Health & Natural Sciences
+MH364,3,General-Purpose Classroom,FICM 100,,980,40,24.5,12,68,29.2,78,,School of Health & Natural Sciences; School of Nursing; School of Liberal Arts; School of Business
+MH382,3,General-Purpose Classroom,FICM 100,,656,24,27.3,11,78,30.2,81,,School of Liberal Arts; School of Health & Natural Sciences; School of Business; School of Social & Behavioral Sciences
+MHG2,G,General-Purpose Classroom,FICM 100,,1261,48,26.3,12,57,28.0,75,,School of Social & Behavioral Sciences; School of Nursing; School of Business; School of Health & Natural Sciences; School of Liberal Arts
+MHG3,G,General-Purpose Classroom,FICM 100,,1300,48,27.1,13,62,28.2,76,,School of Health & Natural Sciences; School of Business; School of Nursing; School of Liberal Arts; School of Social & Behavioral Sciences
+MHG4,G,General-Purpose Classroom,FICM 100,,840,28,30.0,10,76,29.5,79,,School of Social & Behavioral Sciences; School of Nursing; School of Health & Natural Sciences; School of Liberal Arts
+MHLH,,Lecture Hall,FICM 610,Lecture hall,2164,178,12.2,8,22,19.3,52,,School of Nursing; School of Health & Natural Sciences; School of Liberal Arts
+MH217,2,Teaching Laboratory,FICM 210,Computer lab,582,20,29.1,11,94,31.5,84,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH239,2,Teaching Laboratory,FICM 210,Computer lab,576,18,32.0,9,77,21.4,57,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH277A,2,Teaching Laboratory,FICM 210,Nursing Basic Skills Lab,1252,24,52.2,8,61,20.0,54,,School of Nursing
+MH277B,2,Teaching Laboratory,FICM 210,Nursing Basic Skills Lab,1430,24,59.6,5,57,12.0,32,,School of Nursing
+MH279,2,Teaching Laboratory,FICM 210,Anatomy & Physiology Lab,621,20,31.1,10,99,28.3,76,,School of Health & Natural Sciences
+MH302,3,Teaching Laboratory,FICM 210,Veterinary Technology Lab,993,24,41.4,7,44,23.8,64,,School of Health & Natural Sciences
+MH305,3,Teaching Laboratory,FICM 210,,1222,24,50.9,,,,,Evening and weekend only.,
+MH309,3,Teaching Laboratory,FICM 210,General Chemistry Lab,953,20,47.7,7,79,19.8,53,,School of Health & Natural Sciences
+MH311,3,Teaching Laboratory,FICM 210,Organic Chemistry Lab,1236,16,77.3,5,88,14.2,38,,School of Health & Natural Sciences
+MH313,3,Teaching Laboratory,FICM 210,Computer lab,513,24,21.4,8,64,20.6,55,,School of Liberal Arts; School of Social & Behavioral Sciences
+MH314,3,Teaching Laboratory,FICM 210,Computer lab,755,20,37.8,8,74,20.5,55,,School of Liberal Arts; School of Health & Natural Sciences; School of Social & Behavioral Sciences
+MH315,3,Teaching Laboratory,FICM 210,Clinical Lab Science / Biology,776,18,43.1,6,83,26.2,70,,School of Health & Natural Sciences
+MH317,3,Teaching Laboratory,FICM 210,Microbiology Lab,742,24,30.9,7,78,19.0,51,,School of Health & Natural Sciences
+MH318,3,Teaching Laboratory,FICM 210,Physics Lab,475,16,29.7,3,98,17.0,46,,School of Health & Natural Sciences
+MH319,3,Teaching Laboratory,FICM 210,A&P / Vet Anatomy Lab,772,24,32.2,5,63,14.2,38,,School of Health & Natural Sciences
+MH321,3,Teaching Laboratory,FICM 210,General Biology Lab,1045,24,43.5,7,79,19.8,53,,School of Health & Natural Sciences
+MH322,3,Teaching Laboratory,FICM 210,Biology Research Lab,596,8,74.5,3,46,17.0,46,,School of Health & Natural Sciences
+MH323,3,Teaching Laboratory,FICM 210,Cell Biology Lab,840,20,42.0,1,90,5.7,15,,School of Health & Natural Sciences
+MH376,3,Teaching Laboratory,FICM 210,Shared Skills Lab,885,24,36.9,2,60,4.0,11,,School of Nursing
+MH378,3,Teaching Laboratory,FICM 210,Shared Skills Lab,970,40,24.3,4,39,6.7,18,,School of Nursing; School of Health & Natural Sciences
+MH277C,2,Open Laboratory,FICM 220,Nursing SIM Lab,189,6,31.5,,,,,Open laboratory,
+MH372,3,Open Laboratory,FICM 220,Health SIM / OT–PT Lab,529,16,33.1,,,,,Open laboratory,
+MH374,3,Open Laboratory,FICM 220,Movement Lab / OT–PT,1368,40,34.2,,,,,Open laboratory,

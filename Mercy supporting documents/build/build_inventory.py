@@ -55,6 +55,12 @@ OPEN_LABS = [
     ("MH374",1368,40,34.2,None,None,None,None,"Open laboratory"),
 ]
 
+# The report groups the lecture hall with general-purpose classrooms, but the 2021 zone plan
+# paints it as ASSEMBLY. Splitting it out lets the classroom figures reconcile between the two.
+ROOM_TYPE_OVERRIDES = {
+    "MHLH": ("Lecture Hall", "FICM 610"),
+}
+
 # Stated specialties from the Rickes report (not inferred from course schedules).
 SPECIALTY = {
     "MHLH": "Lecture hall",
@@ -93,6 +99,7 @@ def floor(room):
 
 def record(row, room_type, ficm):
     room, area, seats, asf_seat, courses, occupancy, weekly, hours_pct, comment = row
+    room_type, ficm = ROOM_TYPE_OVERRIDES.get(room, (room_type, ficm))
     return {
         "room": room, "floor": floor(room), "roomType": room_type, "ficm": ficm,
         "specialty": SPECIALTY.get(room, ""),
